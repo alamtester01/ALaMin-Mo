@@ -32,7 +32,54 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.button {
+  background-color: #262262 !important;
+  
+}
+
+.main {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  height: 100vh !important;
+  height: -webkit-fill-available;
+  max-height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.nav-link.active {
+  background-color: #CFCEE3 !important;
+  color: #262262 !important;
+}
+
+.btn {
+  --bs-btn-border-width: 0 !important;
+}
+
+.dropdown-menu {
+  --bs-dropdown-link-active-bg: #262262 !important;
+}
+
+.required-field:after {
+  content:"*";
+  color:red;
+}
+
+.modal-60w {
+  width: 60% !important;
+  max-width: none !important;
+}
+
+.modal-body {
+  padding: 4% !important;
+}
+
+.icon {
+  padding-right: 10px;
 }
