@@ -93,12 +93,6 @@ const GroupList = () => {
     );
   }, []);
 
-  /**
-   *  Update user role state and models state
-   */
-  useEffect(() => {
-    // dispatch(getAllModels());
-  }, []);
 
   /**
    * Handles event upon clicking the view button and navigates to the Models View page

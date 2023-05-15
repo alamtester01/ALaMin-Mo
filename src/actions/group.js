@@ -1,16 +1,10 @@
 import {
-  UPLOAD_SUCCESS,
-  UPLOAD_FAIL,
-  ADD_MODEL_SUCCESS,
-  ADD_MODEL_FAIL,
-  UPDATE_MODEL_SUCCESS,
-  UPDATE_MODEL_FAIL,
-  GET_MODEL_SUCCESS,
-  GET_MODEL_FAIL,
-  GET_ALL_MODELS_SUCCESS,
-  GET_ALL_MODELS_FAIL,
-  GET_ALL_PUBLISHED_MODELS_SUCCESS,
-  GET_ALL_PUBLISHED_MODELS_FAIL,
+  UPDATE_GROUP_SUCCESS,
+  UPDATE_GROUP_FAIL,
+  GET_GROUP_SUCCESS,
+  GET_GROUP_FAIL,
+  GET_ALL_GROUPS_SUCCESS,
+  GET_ALL_GROUPS_FAIL,
   SET_MESSAGE,
 } from "./types";
 import GroupService from "services/group.service";
@@ -36,7 +30,7 @@ import GroupService from "services/group.service";
  */
 export const addGroup =
   (groupName, groupDescription, groupMembers) => (dispatch) => {
-    return ModelService.addModel(
+    return GroupService.addGroup(
       groupName,
       groupDescription,
       groupMembers
@@ -92,7 +86,7 @@ export const updateGroup =
     ).then(
       (data) => {
         dispatch({
-          type: UPDATE_MODEL_SUCCESS,
+          type: UPDATE_GROUP_SUCCESS,
           payload: data,
         });
 
@@ -112,7 +106,7 @@ export const updateGroup =
           error.toString();
 
         dispatch({
-          type: UPDATE_MODEL_FAIL,
+          type: UPDATE_GROUP_FAIL,
         });
 
         dispatch({

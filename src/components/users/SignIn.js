@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
@@ -7,19 +7,21 @@ import { clearMessage } from "actions/message";
 import { useNavigate } from "react-router-dom";
 import { InputGroup, Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
+
 /**
- * A module for the Consumer Login Component
- * @module components/consumer/Login
+ * A module for the SignIn Component
+ * @module components/users/SignIn
  */
 
 /**
- * Consumer Login Component
- * @method Login
+ * SignIn Component
+ * @method SignIn
  * @return {JSX.Element}
  *
  */
 const SignIn = (props) => {
-
   const navigate = useNavigate();
   const form = useRef();
   const dispatch = useDispatch();
@@ -96,15 +98,7 @@ const SignIn = (props) => {
    * @method onClickRegister
    */
   const onClickRegister = () => {
-    navigate("/consumer/register/");
-  };
-
-  /**
-   * Navigate to the contributor login page
-   * @method onClickContributor
-   */
-  const onClickContributor = () => {
-    navigate("/contributor/login/");
+    navigate("/register/");
   };
 
   /**
@@ -159,7 +153,7 @@ const SignIn = (props) => {
             setShow(false);
             dispatch(clearMessage());
           }, 5000); // 5 seconds
-  
+
           return () => clearTimeout(timeout);
         });
     }
@@ -169,24 +163,17 @@ const SignIn = (props) => {
    *  Navigate to the model list if the user already logged in
    */
   if (isLoggedIn) {
-    return <Navigate to="/models" />;
+    return <Navigate to="/groups" />;
   }
 
   return (
     <section>
       <div className="login-div container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col-md-9 col-lg-6 col-xl-5">
-            <img
-              src="/images/login.jpg"
-              className="img-fluid"
-              alt="Sample image"
-            />
-          </div>
           <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
             <form onSubmit={handleLogin} ref={form}>
               <p className="text-left h2 mb-5 mx-1 mt-4">
-                Login Form
+                Sign In Form
               </p>
               <div className="form-outline mb-4">
                 <label className="form-label" htmlFor="form3Example3">
@@ -227,15 +214,18 @@ const SignIn = (props) => {
                     onChange={onChangePassword}
                   />
                   <Button variant="outline-secondary">
-                    {/* <FontAwesomeIcon
+                    <FontAwesomeIcon
                       className="icon"
                       onClick={onClickPasswordBtn}
                       icon={passwordShow ? solid("eye") : solid("eye-slash")}
-                    /> */}
+                    />
                   </Button>
                   {getFormErrorMessage("password")}
                   <div className="text-right">
-                    <Link to="/forgot-password/" className="forgot-password-link">
+                    <Link
+                      to="/forgot-password/"
+                      className="forgot-password-link"
+                    >
                       Forgot password?
                     </Link>
                   </div>
@@ -262,10 +252,7 @@ const SignIn = (props) => {
                 </button>
                 <p className="small mb-0">
                   Don't have an account?{" "}
-                  <Link
-                    to="/consumer/register/"
-                    className="link-danger"
-                  >
+                  <Link to="/consumer/register/" className="link-danger">
                     Register here
                   </Link>
                 </p>

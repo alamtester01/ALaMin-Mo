@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Alert } from "react-bootstrap";
 import { CancelToken, isCancel } from "axios";
 import Home from "components/Home";
-import SignIn from "components/SignIn";
-import SignUp from "components/SignUp";
-import RequireAuth from "components/RequireAuth";
+import SignIn from "components/users/SignIn";
+import SignUp from "components/users/SignUp";
+import RequireAuth from "components/users/RequireAuth";
 import PageNotFound from "components/PageNotFound";
-import ForgotPassword from "components/ForgotPassword";
+import ForgotPassword from "components/users/ForgotPassword";
 import Header from "components/layout/Header";
 import Sidebar from "components/layout/Sidebar";
 import { clearMessage } from "actions/message";
@@ -64,7 +64,6 @@ const App = () => {
         <Header isLoggedIn={isLoggedIn} />
         <div className="main">
           {isLoggedIn && <Sidebar />}
-          <Sidebar />
           <Col id="page-content-wrapper">
             <Routes>
               <Route path="/" element={<Home />} />

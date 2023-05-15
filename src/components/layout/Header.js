@@ -81,7 +81,7 @@ const Header = (props) => {
                 <Button
                   className="button btn btn-primary"
                   type="button"
-                  onClick={() => setShowModal(true)}
+                  onClick={() => navigate("signin")}
                 >
                   Sign in
                 </Button>

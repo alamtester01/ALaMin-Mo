@@ -5,7 +5,7 @@ import axios from "axios";
  * @module services/groupServices
  */
 
-const API_URL = "http://192.168.6.109:8000/api/";
+const API_URL = "http://192.168.91.124:8000/user/";
 
 /**
  * Add group information service that sends request and receives response data using axios
@@ -28,7 +28,7 @@ const addGroup = (groupName, groupDescription, groupMembers) => {
   };
 
   return axios
-    .post(API_URL + "add-model/", params, {
+    .post(API_URL + "group/add", params, {
       headers: {
         Authorization: `JWT ${localStorage.getItem("access")}`,
       },
@@ -61,7 +61,7 @@ const updateGroup = (groupID, groupName, groupDescription, groupMembers) => {
   formData.append("groupMembers", groupMembers);
 
   return axios
-    .put(API_URL + "models/" + id + "/update", formData, {
+    .put(API_URL + "models/" + groupID + "/update", formData, {
       headers: {
         Authorization: `JWT ${localStorage.getItem("access")}`,
       },

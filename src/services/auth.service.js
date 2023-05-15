@@ -5,7 +5,7 @@ import axios from "axios";
  * @module services/authServices
  */
 
-const API_URL = "http://192.168.6.109:8000/auth/";
+const API_URL = "http://192.168.91.124:8000/auth/";
 
 /**
  * User registration service that sends request and receives response data using axios
