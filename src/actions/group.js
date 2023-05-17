@@ -5,6 +5,8 @@ import {
   GET_GROUP_FAIL,
   GET_ALL_GROUPS_SUCCESS,
   GET_ALL_GROUPS_FAIL,
+  GET_ALL_USERS_SUCCESS,
+  GET_ALL_USERS_FAIL,
   SET_MESSAGE,
 } from "./types";
 import GroupService from "services/group.service";
@@ -228,6 +230,48 @@ export const getAllGroups = () => (dispatch) => {
 
       dispatch({
         type: GET_ALL_GROUPS_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+/**
+ * Get all users information
+ * success and error response action
+ *
+ *
+ * @method getAllUsers
+ *
+ * @return {Promise}
+ *
+ */
+export const getAllUsers = () => (dispatch) => {
+  return GroupService.getAllUsers().then(
+    (data) => {
+      dispatch({
+        type: GET_ALL_USERS_SUCCESS,
+        payload: data,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: GET_ALL_USERS_FAIL,
       });
 
       dispatch({

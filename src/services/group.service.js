@@ -5,7 +5,7 @@ import axios from "axios";
  * @module services/groupServices
  */
 
-const API_URL = "http://192.168.91.124:8000/user/";
+const API_URL = "http://localhost:8000/user/";
 
 /**
  * Add group information service that sends request and receives response data using axios
@@ -22,9 +22,9 @@ const API_URL = "http://192.168.91.124:8000/user/";
  */
 const addGroup = (groupName, groupDescription, groupMembers) => {
   const params = {
-    groupName,
-    groupDescription,
-    groupMembers,
+    group_name: groupName,
+    group_description: groupDescription,
+    group_members: groupMembers,
   };
 
   return axios
@@ -128,7 +128,7 @@ const getGroup = (id) => {
  */
 const getAllGroups = () => {
   return axios
-    .get(API_URL + "groups/", {
+    .get(API_URL + "group", {
       headers: {
         Authorization: `JWT ${localStorage.getItem("access")}`,
       },
@@ -138,12 +138,35 @@ const getAllGroups = () => {
     });
 };
 
-const modelServices = {
+
+/**
+ * Get all user information service that sends request and receives response data using axios
+ *
+ *
+ * @method getAllGroups
+ *
+ * @return {Promise}
+ *
+ */
+const getAllUsers = () => {
+  return axios
+    .get(API_URL + "email", {
+      headers: {
+        Authorization: `JWT ${localStorage.getItem("access")}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
+};
+
+const groupServices = {
   addGroup,
   updateGroup,
   removeGroup,
   getGroup,
   getAllGroups,
+  getAllUsers,
 };
 
-export default modelServices;
+export default groupServices;

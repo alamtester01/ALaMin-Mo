@@ -2,12 +2,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { List, AutoSizer } from "react-virtualized";
 import "react-bootstrap-typeahead/css/Typeahead.css";
-import { useDispatch } from "react-redux";
-import { addGroup } from "actions/group";
+import { useDispatch, useSelector } from "react-redux";
+import { addGroup, getAllUsers } from "actions/group";
 /**
  * A module for the CreateGroupModal Component
  * @module components/layout/CreateGroupModal
@@ -24,41 +24,59 @@ const CreateGroupModal = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
 
+  const { users } = useSelector((state) => state.group);
+
   const [groupName, setGroupName] = useState("");
   const [groupDescription, setGroupDescription] = useState("");
-  const [groupMembers, setGroupMembers] = useState({});
+  const [options, setOptions] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]);
 
-  const options = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
+  useEffect(() => {
+    dispatch(getAllUsers())
+  }, []);
+  useEffect(() => {
+    const test = Object.values(users).map(user => {
+      return user.first_name + " " + user.last_name 
+    })
+    setOptions(test)
+  }, [users]);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleSelect = (selected) => {
     setSelectedOptions(selected);
   };
 
-  const handleDelete = (deleted) => {
-    setSelectedOptions(selectedOptions.filter((option) => option !== deleted));
-  };
+  // const handleDelete = (deleted) => {
+  //   setSelectedOptions(selectedOptions.filter((option) => option !== deleted));
+  // };
 
-  const rowRenderer = ({ key, index, style }) => (
-    <div key={key} style={style}>
-      {options[index]}
-    </div>
-  );
+  // const rowRenderer = ({ key, index, style }) => (
+  //   <div key={key} style={style}>
+  //     {options[index]}
+  //   </div>
+  // );
 
   const onChangeGroupName = (e) => {
     const value = e.target.value;
     setGroupName(value);
-  }
+  };
 
   const onChangeGroupDescription = (e) => {
     const value = e.target.value;
     setGroupDescription(value);
-  }
+  };
 
   const handleFormSubmit = (e) => {
-    dispatch(addGroup(groupName, groupDescription, selectedOptions)).then(() => {
-      console.log("success");
-    });
+    const emails = selectedOptions.map((option) => {
+      const result = Object.values(users).filter((user) => user.first_name + " " + user.last_name === option )
+      return result[0].email
+    })
+    console.log(emails)
+    dispatch(addGroup(groupName, groupDescription, emails)).then(
+      () => {
+        console.log("success");
+      }
+    );
   };
   return (
     <>

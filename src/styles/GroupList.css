@@ -1,0 +1,40 @@
+.dTFFld {
+  font-weight: bold;
+  font-family: 'Montserrat Bold', 'Montserrat Regular', 'Montserrat', sans-serif;
+}
+
+.jlPZUL {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.gMzYpg {
+  padding: 4px 16px 4px 0px;
+  justify-content: flex-start;
+}
+
+.container {
+  max-width: 100%;
+}
+
+/* Custom styles for pagination */
+.pagination {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.pagination li {
+  margin: 0 0.5rem;
+}
+
+.pagination li a {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pagination li.active a {
+  font-weight: bold;
+}

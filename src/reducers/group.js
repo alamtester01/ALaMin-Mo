@@ -5,6 +5,8 @@ import {
   GET_GROUP_FAIL,
   GET_ALL_GROUPS_SUCCESS,
   GET_ALL_GROUPS_FAIL,
+  GET_ALL_USERS_SUCCESS,
+  GET_ALL_USERS_FAIL,
 } from "../actions/types";
 
 /**
@@ -12,7 +14,7 @@ import {
  * @module reducers/group
  */
 
-const initialState = { groups: {}, currentGroup: {} };
+const initialState = { groups: {}, currentGroup: {}, users: {} };
 
 /**
  * Method that take the current state and an action as arguments, and return a new state result
@@ -58,6 +60,16 @@ export default function groupReducer(state = initialState, action) {
       return {
         ...state,
         groups: {},
+      };
+    case GET_ALL_USERS_SUCCESS:
+      return {
+        ...state,
+        users: payload,
+      };
+    case GET_ALL_USERS_FAIL:
+      return {
+        ...state,
+        users: {},
       };
     default:
       return state;
