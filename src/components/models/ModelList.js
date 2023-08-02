@@ -381,6 +381,7 @@ const ModelList = () => {
     // Create an empty Set to store unique tasks
     const uniqueTasks = new Set();
     const uniqueUsers = new Set();
+    const outputArray = [];
 
     // Iterate through the inputArray and add each task to the Set
     Object.values(models).forEach((item) =>
@@ -397,28 +398,16 @@ const ModelList = () => {
           ? "me"
           : model_user?.first_name + " " + model_user?.last_name;
 
-      if (
-        !Object.values(uniqueUsers).find(
-          (u) => u.value.email === item.model_created_by
-        )
-      ) {
-        // uniqueUsers[item.model_created_by] = {
-        //   created_by: model_user_name,
-        //   email: item.model_created_by,
-        // };
-        uniqueUsers.add({
-          created_by: model_user_name,
-          email: item.model_created_by,
-        });
+      if (!uniqueUsers.has(item.model_created_by)) {
+        uniqueUsers.add(item.model_created_by);
+        outputArray.push({ email: item.model_created_by, created_by: model_user_name });
       }
     });
-    console.log(uniqueUsers);
 
     // Convert the Set back to an array
     const filteredTasks = Array.from(uniqueTasks);
-    const filteredCreatedBy = Array.from(uniqueUsers);
+    const filteredCreatedBy = Array.from(outputArray);
 
-    console.log(filteredCreatedBy);
     return (
       <div className="model-list-header">
         <div className="search-input-container">
