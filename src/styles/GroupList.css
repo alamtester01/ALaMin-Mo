@@ -1,22 +1,3 @@
-.dTFFld {
-  font-weight: bold;
-  font-family: 'Montserrat Bold', 'Montserrat Regular', 'Montserrat', sans-serif;
-}
-
-.jlPZUL {
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.gMzYpg {
-  padding: 4px 16px 4px 0px;
-  justify-content: flex-start;
-}
-
-.container {
-  max-width: 100%;
-}
-
 /* Custom styles for pagination */
 .pagination {
   list-style-type: none;
@@ -30,11 +11,73 @@
 }
 
 .pagination li a {
-  color: #007bff;
   text-decoration: none;
   cursor: pointer;
 }
 
 .pagination li.active a {
   font-weight: bold;
+}
+
+.plus-members-count {
+  position: absolute;
+  margin-left: 10px;
+  padding: 3px 5px 2px 5px;
+  border-radius: 15px;
+  font-size: 12px;
+  background-color: rgb(244 244 247);
+}
+
+.hOjrSE {
+  font-size: 15px;
+  color: #333333;
+}
+
+.content-container {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-group-list {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+.dropdown-group-list > span {
+  font-family: "Montserrat SemiBold", "Montserrat Regular", "Montserrat",
+    sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 16px;
+  color: #2e2e2e;
+}
+
+/* .dropdown-menu {
+  transition: transform 0.3s ease-in-out;
+}
+
+.slide-down {
+  transform-origin: top;
+  transform: translate(0px, 38px) scaleY(0);
+}
+
+.slide-down.show {
+  transform: translate(0px, 38px) scaleY(1) !important;
+} */
+
+.group-list-header {
+  display: inline-flex;
+}
+
+.search-input {
+  width: 470px;
+  height: 30px;
+}
+
+.slide-down {
+  inset: 100% auto auto auto !important;
+  transform: none !important;
 }

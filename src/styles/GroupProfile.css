@@ -1,0 +1,27 @@
+.group-name-profile {
+  font-family: "Montserrat Bold", "Montserrat Regular", "Montserrat", sans-serif;
+  font-weight: bold;
+  font-style: normal;
+  font-size: 22px;
+  color: #2e2e2e;
+  text-align: left;
+}
+
+.nav-item > .nav-link {
+  color: #2e2e2e;
+}
+
+.dropdown-member-list {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+.dropdown-member-list > span {
+  font-family: "Montserrat SemiBold", "Montserrat Regular", "Montserrat",
+    sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 16px;
+  color: #2e2e2e;
+}

@@ -26,36 +26,18 @@ const Header = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [showModal, setShowModal] = useState(false);
-  const handleClose = () => setShowModal(false);
-
   /**
    *  Navigates to the login after clicking logout button
    * @method onClickLogout
    */
   const onClickLogout = () => {
-    handleClose();
     dispatch(logout());
     navigate("/");
   };
 
   return (
     <>
-      <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Logout</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to logout?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button className="button" variant="primary" onClick={onClickLogout}>
-            Proceed
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      <nav className="navbar navbar-expand-lg bg-light border-bottom">
+      <nav className="navbar navbar-expand-lg bg-light-color">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
             <img
@@ -65,16 +47,15 @@ const Header = (props) => {
             />
           </a>
           <div className="logout-div">
-            {props.isLoggedIn ? (
+            {props?.isLoggedIn ? (
               <>
                 <Button
                   className="button btn btn-primary"
                   type="button"
-                  onClick={() => setShowModal(true)}
+                  onClick={onClickLogout}
                 >
                   Logout
                 </Button>
-                <AuthVerify logout={onClickLogout} />
               </>
             ) : (
               <>
@@ -85,9 +66,9 @@ const Header = (props) => {
                 >
                   Sign in
                 </Button>
-                <AuthVerify logout={onClickLogout} />
               </>
             )}
+            <AuthVerify logout={onClickLogout} />
           </div>
         </div>
       </nav>

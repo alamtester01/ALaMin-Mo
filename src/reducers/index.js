@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import auth from "reducers/auth";
 import message from "reducers/message";
 import group from "reducers/group";
+import model from "reducers/model";
 
 /**
  * A module that manages all state
@@ -23,4 +24,5 @@ export default combineReducers({
   auth,
   message,
   group,
+  model
 });

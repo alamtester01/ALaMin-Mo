@@ -1,0 +1,22 @@
+#rowsPerPage {
+    width: 16% !important;
+}
+
+.page-link {
+    color: #000;
+    border-width: 0;
+}
+
+.active>.page-link, .page-link.active {
+    background-color: #262262;
+    border-color: #262262;
+    border-radius: 5px;
+}
+
+.active>.page-link:hover, .page-link.active:hover {
+    color: #fff;
+}
+
+.page-link:hover {
+    color: #000;
+}

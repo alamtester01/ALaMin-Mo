@@ -1,4 +1,5 @@
 import {
+  DELETE_GROUP_SUCCESS,
   UPDATE_GROUP_SUCCESS,
   UPDATE_GROUP_FAIL,
   GET_GROUP_SUCCESS,
@@ -40,16 +41,21 @@ export const addGroup =
       (data) => {
         dispatch({
           type: SET_MESSAGE,
-          payload: "Group added successfully!",
+          payload: data?.error || "Group created!",
         });
 
-        return Promise.resolve(data);
+        return Promise.resolve(data?.error ? "error" : "success");
       },
       (error) => {
+        console.log(error);
         const message =
           (error.response &&
             error.response.data &&
-            error.response.data.message) ||
+            (error.response.data.message ||
+              (error.response.data?.group_description &&
+                error.response.data?.group_description[0]) ||
+              (error.response.data?.group_members &&
+                error.response.data?.group_members[0]))) ||
           error.message ||
           error.toString();
 
@@ -80,21 +86,23 @@ export const addGroup =
  */
 export const updateGroup =
   (groupID, groupName, groupDescription, groupMembers) => (dispatch) => {
-    return GroupService.updateModel(
+    return GroupService.updateGroup(
       groupID,
       groupName,
       groupDescription,
       groupMembers
     ).then(
       (data) => {
-        dispatch({
-          type: UPDATE_GROUP_SUCCESS,
-          payload: data,
-        });
+        if (!data?.error) {
+          dispatch({
+            type: UPDATE_GROUP_SUCCESS,
+            payload: data,
+          });
+        }
 
         dispatch({
           type: SET_MESSAGE,
-          payload: "Group updated successfully!",
+          payload: data?.error || "Group updated successfully!",
         });
 
         return Promise.resolve(data);
@@ -122,20 +130,29 @@ export const updateGroup =
   };
 
 /**
- * Remove group information and model file path
+ * Delete group information and model file path
  * success and error response action
  *
  *
- * @method removeGroup
+ * @method deleteGroup
  *
  * @param {string} id - A string for identifying model
  *
  * @return {Promise}
  *
  */
-export const removeGroup = (id) => (dispatch) => {
-  return GroupService.removeGroup(id).then(
+export const deleteGroup = (id) => (dispatch) => {
+  return GroupService.deleteGroup(id).then(
     (data) => {
+      dispatch({
+        type: DELETE_GROUP_SUCCESS,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: data?.error || "Group deleted.",
+      });
+
       return Promise.resolve();
     },
     (error) => {
@@ -157,7 +174,7 @@ export const removeGroup = (id) => (dispatch) => {
 };
 
 /**
- * Get group information and model file path
+ * Get group information
  * success and error response action
  *
  *
@@ -182,7 +199,7 @@ export const getGroup = (id) => (dispatch) => {
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data.message) ||
+          error.response.data.messages[0].message) ||
         error.message ||
         error.toString();
 
@@ -263,6 +280,51 @@ export const getAllUsers = () => (dispatch) => {
       return Promise.resolve();
     },
     (error) => {
+      console.log(error);
+      const message =
+        (error.response &&
+          error.response.data &&
+          (error.response.data.error ||
+            error.response.data.messages[0].message)) ||
+        error.message ||
+        error.toString();
+      dispatch({
+        type: GET_ALL_USERS_FAIL,
+      });
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+/**
+ * Add group members information
+ * success and error response action
+ *
+ *
+ * @method addMembers
+ *
+ * @param {string} groupID - A string for identifying group
+ * @param {string} groupMembers - An object to list down members of the group
+ *
+ * @return {Promise}
+ *
+ */
+export const addMembers = (groupID, groupMembers) => (dispatch) => {
+  return GroupService.addMembers(groupID, groupMembers).then(
+    (data) => {
+      dispatch({
+        type: SET_MESSAGE,
+        payload: "Member added.",
+      });
+
+      return Promise.resolve(data);
+    },
+    (error) => {
       const message =
         (error.response &&
           error.response.data &&
@@ -271,8 +333,45 @@ export const getAllUsers = () => (dispatch) => {
         error.toString();
 
       dispatch({
-        type: GET_ALL_USERS_FAIL,
+        type: SET_MESSAGE,
+        payload: message,
       });
+
+      return Promise.reject();
+    }
+  );
+};
+
+/**
+ * Add group members information
+ * success and error response action
+ *
+ *
+ * @method removeMember
+ *
+ * @param {string} groupID - A string for identifying group
+ * @param {string} email - An email of the member to remove
+ *
+ * @return {Promise}
+ *
+ */
+export const removeMember = (groupID, email) => (dispatch) => {
+  return GroupService.removeMember(groupID, email).then(
+    (data) => {
+      dispatch({
+        type: SET_MESSAGE,
+        payload: "Member removed.",
+      });
+
+      return Promise.resolve(data);
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
       dispatch({
         type: SET_MESSAGE,

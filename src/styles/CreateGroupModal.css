@@ -1,0 +1,15 @@
+.token {
+  background-color: #cfcee3;
+  padding: 0 10px;
+  margin: 0 3px;
+  border-radius: 5px;
+}
+
+.token-label {
+  padding-left: 5px;
+}
+
+.token-remove {
+  background-color: #cfcee3;
+  border-width: 0;
+}

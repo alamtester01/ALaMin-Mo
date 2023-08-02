@@ -1,5 +1,6 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 /**
  * A module for Require Authentication component
@@ -20,7 +21,7 @@ const RequireAuth = () => {
   return isLoggedIn ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+    <Navigate to="/" state={{ from: location }} replace />
   );
 };
 

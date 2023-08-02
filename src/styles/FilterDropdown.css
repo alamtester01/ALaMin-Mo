@@ -1,0 +1,54 @@
+.my-groups-dropdown {
+  margin-left: 2%;
+}
+
+.my-groups-dropdown > button {
+  padding: 3px 21px 3px 13px;
+}
+
+.my-groups-dropdown > button.expanded {
+  color: #262262 !important;
+}
+
+.my-groups-btn {
+  box-sizing: border-box;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: rgba(221, 221, 221, 1) !important;
+  border-radius: 5px !important;
+  box-shadow: none;
+  font-family: "Montserrat Medium", "Montserrat Regular", "Montserrat",
+    sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  color: #333333;
+}
+
+.my-groups-dropdown-menu {
+  width: 305px;
+  padding-top: 0;
+}
+
+.input-search {
+  border: 0;
+  border-bottom: 1px solid rgb(153, 153, 153);;
+  border-radius: 0;
+}
+
+.gray-link {
+  color: #2e2e2e;
+}
+
+.gray-link:hover {
+  color: #2e2e2e;
+}
+
+.showing-items {
+  margin: 6px;
+}
+
+.group-list-checkboxes {
+  overflow-y: scroll;
+  height: 200px;
+  margin: 10px;
+}

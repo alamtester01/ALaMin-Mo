@@ -36,11 +36,9 @@ const parseJwt = (token) => {
     if (access) {
       const decodedJwt = parseJwt(access);
       if (decodedJwt.exp * 1000 < Date.now()) {
-        props.logout();
+        props?.logout();
       }
     }
-  
-    return <div></div>;
   };
   
   export default AuthVerify;

@@ -1,11 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import { login } from "actions/auth";
 import { clearMessage } from "actions/message";
 import { useNavigate } from "react-router-dom";
-import { InputGroup, Button, Spinner } from "react-bootstrap";
+import { Container, InputGroup, Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
@@ -22,6 +22,7 @@ import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
  *
  */
 const SignIn = (props) => {
+  import("styles/SignIn.css");
   const navigate = useNavigate();
   const form = useRef();
   const dispatch = useDispatch();
@@ -43,10 +44,10 @@ const SignIn = (props) => {
   const [password, setPassword] = useState("");
   const [passwordShow, setPasswordShow] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [show, setShow] = useState(false);
   const [isValid, setIsValid] = useState({});
   const [error, setError] = useState({});
   const [counter, setCounter] = useState(0);
+  const [disabled, setDisabled] = useState(true);
 
   /**
    *  Validates name and value of the input field
@@ -98,7 +99,7 @@ const SignIn = (props) => {
    * @method onClickRegister
    */
   const onClickRegister = () => {
-    navigate("/register/");
+    navigate("/signup/");
   };
 
   /**
@@ -141,135 +142,123 @@ const SignIn = (props) => {
     if (Object.keys(error).length === 0) {
       setLoading(true);
       dispatch(login(email, password))
-        .then(() => {
-          setShow(false);
-        })
-        .catch(() => {
-          setShow(true);
+        .catch((err) => {
+          console.log(err);
         })
         .finally(() => {
           setLoading(false);
-          const timeout = setTimeout(() => {
-            setShow(false);
-            dispatch(clearMessage());
-          }, 5000); // 5 seconds
-
-          return () => clearTimeout(timeout);
         });
     }
   };
+
+  useEffect(() => {
+    if (email !== "" && password !== "" && Object.keys(error).length === 0) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [email, password]);
 
   /**
    *  Navigate to the model list if the user already logged in
    */
   if (isLoggedIn) {
-    return <Navigate to="/groups" />;
+    return <Navigate to="/models" />;
   }
 
   return (
     <section>
-      <div className="login-div container-fluid h-custom">
-        <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <form onSubmit={handleLogin} ref={form}>
-              <p className="text-left h2 mb-5 mx-1 mt-4">
-                Sign In Form
-              </p>
-              <div className="form-outline mb-4">
-                <label className="form-label" htmlFor="form3Example3">
-                  Email address
-                </label>
-                <input
-                  type="text"
-                  className={`form-control ${
-                    isValid?.email
-                      ? "is-valid"
-                      : isValid.email !== undefined
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  name="email"
-                  value={email}
-                  onChange={onChangeEmail}
-                />
-                {getFormErrorMessage("email")}
-              </div>
-
-              <div className="form-outline mb-3">
-                <label className="form-label" htmlFor="form3Example4">
-                  Password
-                </label>
-                <InputGroup className="mb-3">
-                  <input
-                    type={passwordShow ? "text" : "password"}
-                    className={`form-control password ${
-                      isValid?.email
-                        ? "is-valid"
-                        : isValid.password !== undefined
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    name="password"
-                    value={password}
-                    onChange={onChangePassword}
-                  />
-                  <Button variant="outline-secondary">
-                    <FontAwesomeIcon
-                      className="icon"
-                      onClick={onClickPasswordBtn}
-                      icon={passwordShow ? solid("eye") : solid("eye-slash")}
-                    />
-                  </Button>
-                  {getFormErrorMessage("password")}
-                  <div className="text-right">
-                    <Link
-                      to="/forgot-password/"
-                      className="forgot-password-link"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                </InputGroup>
-              </div>
-
-              <div className="text-center text-lg-start mt-4 pt-2">
-                <button
-                  type="submit"
-                  className="button btn btn-primary btn-lg"
-                  style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
-                >
-                  Login
-                  {loading && (
-                    <Spinner
-                      className="spinner"
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                  )}
-                </button>
-                <p className="small mb-0">
-                  Don't have an account?{" "}
-                  <Link to="/consumer/register/" className="link-danger">
-                    Register here
-                  </Link>
-                </p>
-              </div>
-              <Alert
-                className="alert-message"
-                show={show}
-                variant="danger"
-                onClose={() => setShow(false)}
-                dismissible
-              >
-                <p>{message}</p>
-              </Alert>
-            </form>
+      <Container
+        fluid
+        className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: "75vh" }}
+      >
+        <form onSubmit={handleLogin} ref={form}>
+          <p className="text-center h2 mx-1 mt-4">Sign In</p>
+          <p className="text-center">Use your account</p>
+          <div className="form-outline mb-4">
+            <label className="form-label" htmlFor="form3Example3">
+              Email
+            </label>
+            <input
+              type="text"
+              className={`form-control ${
+                isValid?.email
+                  ? "is-valid"
+                  : isValid.email !== undefined
+                  ? "is-invalid"
+                  : ""
+              }`}
+              name="email"
+              value={email}
+              onChange={onChangeEmail}
+            />
+            {getFormErrorMessage("email")}
           </div>
-        </div>
-      </div>
+
+          <div className="form-outline mb-3">
+            <label className="form-label" htmlFor="form3Example4">
+              Password
+            </label>
+            <InputGroup className="mb-3">
+              <input
+                type={passwordShow ? "text" : "password"}
+                className={`form-control password ${
+                  isValid?.password
+                    ? "is-valid"
+                    : isValid.password !== undefined
+                    ? "is-invalid"
+                    : ""
+                }`}
+                name="password"
+                value={password}
+                onChange={onChangePassword}
+              />
+              <Button variant="outline-secondary">
+                <FontAwesomeIcon
+                  className="icon"
+                  onClick={onClickPasswordBtn}
+                  icon={passwordShow ? solid("eye") : solid("eye-slash")}
+                />
+              </Button>
+              {getFormErrorMessage("password")}
+              <div className="text-right">
+                <Link to="/forgot-password/" className="forgot-password-link">
+                  Forgot password?
+                </Link>
+              </div>
+            </InputGroup>
+          </div>
+
+          <div className="d-flex justify-content-between">
+            <Button
+              variant="outline-light"
+              onClick={onClickRegister}
+              className="cancel-btn"
+            >
+              Create account
+            </Button>
+            <Button
+              variant="primary button"
+              type="submit"
+              disabled={disabled}
+              className="submit-btn"
+            >
+              Sign in
+              {loading && (
+                <Spinner
+                  className="spinner"
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              )}
+            </Button>
+          </div>
+        </form>
+      </Container>
     </section>
   );
 };

@@ -1,11 +1,14 @@
-import { useState, useMemo, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import React, { useState, useMemo, useEffect } from "react";
+import { Container, Dropdown, Breadcrumb } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import CustomPagination from "components/layout/CustomPagination";
+import FilterDropdown from "components/layout/FilterDropdown";
+import { current } from "@reduxjs/toolkit";
 import { getAllGroups, getAllUsers } from "actions/group";
+import { compareValues } from "common/constants";
 
-import CustomPagination from "./CustomPagination";
 /**
  * A module for Listing Models component
  * @module components/models/Models
@@ -20,7 +23,7 @@ import CustomPagination from "./CustomPagination";
  */
 
 const GroupList = () => {
-  import("../../styles/GroupList.css");
+  import("styles/GroupList.css");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,79 +33,214 @@ const GroupList = () => {
    * * Redux store state
    * -------------------
    */
-  const { users, groups } = useSelector((state) => state.group);
+  const { users, groups, currentGroup } = useSelector((state) => state.group);
+  const { user } = useSelector((state) => state.auth);
+
+  const [sortDirection, setSortDirection] = useState("desc");
+  const [sortColumn, setSortColumn] = useState("Date created");
+  const [expandedName, setExpandedName] = useState(false);
+  const [expandedDescription, setExpandedDescription] = useState(false);
+  const [expandedMembers, setExpandedMembers] = useState(false);
+
+  const CustomDropdownToggle = React.forwardRef(
+    ({ children, onClick }, ref) => {
+      return (
+        <span
+          ref={ref}
+          onClick={(e) => {
+            e.preventDefault();
+            onClick(e);
+          }}
+        >
+          {children}
+        </span>
+      );
+    }
+  );
+
+  const handleToggleExpand = (column) => {
+    switch (column) {
+      case "name":
+        setExpandedName(!expandedName);
+        setExpandedDescription(false);
+        setExpandedMembers(false);
+        break;
+      case "description":
+        setExpandedDescription(!expandedDescription);
+        setExpandedName(false);
+        setExpandedMembers(false);
+        break;
+      case "members":
+        setExpandedMembers(!expandedMembers);
+        setExpandedName(false);
+        setExpandedDescription(false);
+        break;
+      default:
+      //
+    }
+  };
+
+  // Define your custom header component for Name column
+  const CustomHeader = (props) => {
+    const handleSortToggle = (direction) => {
+      props?.setSortDirection(direction);
+      props?.setSortColumn(props?.columnName);
+    };
+
+    return (
+      <Dropdown
+        show={props?.expanded}
+        className="dropdown-group-list"
+        drop="down"
+      >
+        <Dropdown.Toggle
+          as={CustomDropdownToggle}
+          variant="secondary"
+          id="dropdown-basic"
+        >
+          {props?.columnName}
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu
+          className={
+            props?.expanded ? "dropdown-menu slide-down" : "dropdown-menu"
+          }
+        >
+          <Dropdown.Item onClick={() => handleSortToggle("asc")}>
+            A to Z
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => handleSortToggle("desc")}>
+            Z to A
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  };
 
   /**
    * Columns template and configuration
    */
   const columns = [
     {
-      name: "ID",
-      // selector: '(row) => row.group_name,'
-      selector: (row) => row.id,
-      sortable: true,
-    },
-    {
-      name: "Name",
-      // selector: (row) => row.group_description,
-      selector: (row) => row.name,
-      sortable: true,
-    },
-    {
-      name: "Age",
-      selector: (row) => row.age,
-      // selector: (row) =>
-      //   Object.values(row.group_members).map((member) => {
-      //     const result = Object.values(users).filter(
-      //       (user) => user.email === member
-      //     );
-      //     return result[0]?.first_name + " " + result[0]?.last_name;
-      //   }),
-      sortable: true,
-    },
-  ];
+      name: (
+        <div onClick={() => handleToggleExpand("name")} className="w-100 h-100">
+          <CustomHeader
+            setSortDirection={setSortDirection}
+            setSortColumn={setSortColumn}
+            columnName="Name"
+            expanded={expandedName}
+          />
+        </div>
+      ),
+      selector: (row) => {
+        let group_name = "";
+        const icon = (
+          <img
+            src="/images/groups_list.svg"
+            className="img-fluid icon-list"
+            alt="group"
+          />
+        );
 
-  const xdata = [
-    { id: 1, name: "John Doe", age: 25 },
-    { id: 2, name: "Jane Smith", age: 30 },
-    { id: 3, name: "Jane Smith", age: 30 },
-    { id: 4, name: "Jane Smith", age: 30 },
-    { id: 5, name: "Jane Smith", age: 30 },
-    { id: 6, name: "Jane Smith", age: 30 },
-    { id: 7, name: "Jane Smith", age: 30 },
-    { id: 8, name: "Jane Smith", age: 30 },
-    { id: 9, name: "Jane Smith", age: 30 },
-    { id: 10, name: "Jane Smith", age: 30 },
-    { id: 11, name: "John Doe", age: 25 },
-    { id: 12, name: "Jane Smith", age: 30 },
-    { id: 13, name: "Jane Smith", age: 30 },
-    { id: 14, name: "Jane Smith", age: 30 },
-    { id: 15, name: "Jane Smith", age: 30 },
-    { id: 16, name: "Jane Smith", age: 30 },
-    { id: 17, name: "Jane Smith", age: 30 },
-    { id: 18, name: "Jane Smith", age: 30 },
-    { id: 19, name: "Jane Smith", age: 30 },
-    { id: 20, name: "Jane Smith", age: 30 },
-    { id: 21, name: "John Doe", age: 25 },
-    { id: 22, name: "Jane Smith", age: 30 },
-    { id: 23, name: "Jane Smith", age: 30 },
-    { id: 24, name: "Jane Smith", age: 30 },
-    { id: 25, name: "Jane Smith", age: 30 },
-    { id: 26, name: "Jane Smith", age: 30 },
-    { id: 27, name: "Jane Smith", age: 30 },
-    { id: 28, name: "Jane Smith", age: 30 },
-    { id: 29, name: "Jane Smith", age: 30 },
-    { id: 30, name: "Jane Smith", age: 30 },
-    { id: 31, name: "John Doe", age: 25 },
-    { id: 32, name: "Jane Smith", age: 30 },
-    { id: 33, name: "Jane Smith", age: 30 },
-    { id: 34, name: "Jane Smith", age: 30 },
-    { id: 35, name: "Jane Smith", age: 30 },
-    { id: 36, name: "Jane Smith", age: 30 },
-    { id: 37, name: "Jane Smith", age: 30 },
-    { id: 38, name: "Jane Smith", age: 30 },
-    { id: 39, name: "Jane Smith", age: 30 },
-    { id: 40, name: "Jane Smith", age: 30 },
+        group_name = (
+          <div onClick={() => handleRowClick(row)}>
+            <span key={`groupNameKey${row.id}`}>
+              {icon} {row.group_name}
+            </span>
+          </div>
+        );
+
+        return group_name;
+      },
+      width: "50%",
+    },
+    {
+      name: (
+        <div
+          onClick={() => handleToggleExpand("description")}
+          className="w-100 h-100"
+        >
+          <CustomHeader
+            setSortDirection={setSortDirection}
+            setSortColumn={setSortColumn}
+            columnName="Description"
+            expanded={expandedDescription}
+          />
+        </div>
+      ),
+      selector: (row) => {
+        const parser = new DOMParser();
+        const parsedHTML = parser.parseFromString(
+          row.group_description,
+          "text/html"
+        );
+        const textContent = parsedHTML.body.textContent
+          .substring(0, 100)
+          .trim();
+        return <div onClick={() => handleRowClick(row)}>{textContent}</div>;
+      },
+      width: "30%",
+    },
+    {
+      name: (
+        <div
+          onClick={() => handleToggleExpand("members")}
+          className="w-100 h-100"
+        >
+          <CustomHeader
+            setSortDirection={setSortDirection}
+            setSortColumn={setSortColumn}
+            columnName="Members"
+            expanded={expandedMembers}
+          />
+        </div>
+      ),
+      selector: (row) => {
+        const result = Object.values(row.group_members).map((member) => {
+          return Object.values(users).filter(
+            (user) => user.email === member.email
+          )[0];
+        });
+        let member_name = "";
+        const icon = (
+          <img
+            src="/images/user_list.svg"
+            className="img-fluid icon-list"
+            alt="user"
+          />
+        );
+        if (user.email === result[0]?.email) {
+          member_name = (
+            <span key={`memberKey${result[0]?.id}`}>
+              {icon}me
+              {row.group_members.length - 1 !== 0 && (
+                <span className="plus-members-count">
+                  +{row.group_members.length - 1}
+                </span>
+              )}
+            </span>
+          );
+        } else {
+          if (result[0]) {
+            member_name = (
+              <span key={`memberKey${result[0]?.id}`}>
+                {icon}
+                {result[0]?.first_name + " " + result[0]?.last_name}
+                {row.group_members.length - 1 !== 0 && (
+                  <span className="plus-members-count">
+                    +{row.group_members.length - 1}
+                  </span>
+                )}
+              </span>
+            );
+          } else {
+            member_name = "--";
+          }
+        }
+        return <div onClick={() => handleRowClick(row)}>{member_name}</div>;
+      },
+      width: "20%",
+    },
   ];
 
   /**
@@ -115,63 +253,107 @@ const GroupList = () => {
   const paginationComponentOptions = {
     selectAllRowsItem: true,
   };
-  const filteredItems = Object.values(groups)
-    .filter(
-      (item) =>
-        item.group_name.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.group_description
-          .toLowerCase()
-          .includes(filterText.toLowerCase()) ||
-        Object.values(users)
-          .filter((user) => user.email === item.group_members[0])[0]
-          .first_name.toLowerCase()
-          .includes(filterText.toLowerCase())
-    )
-    .sort((a, b) => {
-      return b.id - a.id;
-    });
+
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  useEffect(() => {
+    handleItemsPerPageChange(itemsPerPage);
+    setFilteredItems(
+      Object.values(groups)
+        .filter(
+          (item) =>
+            (item.group_name.toLowerCase().includes(filterText.toLowerCase()) ||
+              item.group_description
+                .toLowerCase()
+                .includes(filterText.toLowerCase()) ||
+              Object.values(users)
+                .find((user) => user.email === item.group_members[0].email)
+                ?.first_name.concat(
+                  " ",
+                  Object.values(users).find(
+                    (user) => user.email === item.group_members[0].email
+                  )?.last_name
+                )
+                .toLowerCase()
+                .includes(filterText.toLowerCase())) &&
+            (selectedOptions.length > 0
+              ? selectedOptions.includes(item.group_name)
+              : true)
+        )
+        .sort((a, b) => {
+          const parser = new DOMParser();
+          const parsedHTMLA = parser.parseFromString(
+            a.group_description,
+            "text/html"
+          );
+          const parsedHTMLB = parser.parseFromString(
+            b.group_description,
+            "text/html"
+          );
+          const textContentA = parsedHTMLA.body.textContent.trim();
+          const textContentB = parsedHTMLB.body.textContent.trim();
+          switch (sortColumn) {
+            case "Name":
+              return compareValues(a.group_name, b.group_name, sortDirection);
+            case "Description":
+              return compareValues(textContentA, textContentB, sortDirection);
+            case "Members":
+              return compareValues(a.group_owner, b.group_owner, sortDirection);
+            default:
+              return compareValues(
+                a.group_created_at,
+                b.group_created_at,
+                sortDirection
+              );
+          }
+        })
+    );
+  }, [groups, filterText, selectedOptions, sortDirection, sortColumn]);
 
   const subHeaderComponentMemo = useMemo(() => {
+    const filteredGroups = Object.values(groups).filter((group) => {
+      const group_members = group.group_members;
+      return group_members?.some((member) => member.email === user.email);
+    });
+
     return (
-      <input
-        type="text"
-        placeholder="Search groups"
-        onChange={(e) => setFilterText(e.target.value)}
-      />
+      <div className="group-list-header">
+        <div className="search-input-container">
+          <input
+            type="text"
+            placeholder="Search groups"
+            onChange={(e) => setFilterText(e.target.value)}
+            className="search-input"
+          />
+          <img
+            src="/images/search-icon-gray.svg"
+            className="search-icon img-fluid icon-list"
+            alt="group"
+          />
+        </div>
+        <FilterDropdown
+          setSelectedOptions={setSelectedOptions}
+          filterTitle="My groups"
+          options={filteredGroups}
+          name="groups"
+        />
+      </div>
     );
-  }, []);
-
-  /**
-   * Handles event upon clicking the view button and navigates to the Models View page
-   * @param {event} e - An event object containing information about the action
-   */
-  const onClickView = (e) => {
-    const result = groups.find((item) => item.id.toString() === e.target.value);
-    navigate(
-      "/models/view/" +
-        e.target.value +
-        "?isPublish=" +
-        result.model_detail[0].is_publish
-    );
-  };
-
-  /**
-   * Redirects to the Add Model page
-   */
-  const onClickAddBtn = () => {
-    navigate("/models/add");
-  };
+  }, [groups, user]);
 
   useEffect(() => {
-    dispatch(getAllGroups());
-    dispatch(getAllUsers());
+    dispatch(getAllGroups()).catch((err) => console.log(err));
+  }, [currentGroup]);
+
+  useEffect(() => {
+    dispatch(getAllUsers()).catch((err) => console.log(err));
   }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(25);
   const [data, setData] = useState([]); // your data array
   const [paginatedData, setPaginatedData] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
+  const [filteredItems, setFilteredItems] = useState([]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -185,12 +367,10 @@ const GroupList = () => {
   useEffect(() => {
     // Simulating data fetching
     // Replace this with your actual data fetching logic
-    setTimeout(() => {
-      const fetchedData = xdata; // Replace this with your fetched data
-      setData(fetchedData);
-      setTotalItems(fetchedData.length);
-    }, 1000);
-  }, []);
+    const fetchedData = filteredItems; // Replace this with your fetched data
+    setData(fetchedData);
+    setTotalItems(fetchedData.length);
+  }, [filteredItems, sortDirection]);
 
   useEffect(() => {
     let slicedData = data;
@@ -202,9 +382,17 @@ const GroupList = () => {
     setPaginatedData(slicedData);
   }, [currentPage, itemsPerPage, data, totalItems]);
 
+  const handleRowClick = (row) => {
+    // Handle row click event and navigate to a different page
+    navigate("/groups/view/" + row.id);
+  };
+
   return (
     <>
-      <Container>
+      <Container className="mw-100">
+        <Breadcrumb>
+          <Breadcrumb.Item active>Groups</Breadcrumb.Item>
+        </Breadcrumb>
         <DataTable
           className="group-list-datatable"
           title={"Group Profiles"}
@@ -214,6 +402,7 @@ const GroupList = () => {
           subHeader
           subHeaderComponent={subHeaderComponentMemo}
           persistTableHead
+          onRowClicked={handleRowClick}
         />
         <CustomPagination
           totalItems={totalItems}

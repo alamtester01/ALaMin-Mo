@@ -1,0 +1,35 @@
+.home-container-1 {
+  margin-left: 9%;
+  margin-right: 9%;
+}
+
+.home-row-1 {
+  margin: 9% 0 0 0 !important;
+}
+
+.heading-1 {
+  font-size: 51px;
+  margin-top: 12%;
+}
+
+.heading-1 > p {
+  margin-bottom: -13px;
+}
+
+.heading-2 > p {
+  margin-top: 50px;
+  font-weight: 400 !important;
+  font-size: 29px;
+}
+
+.humans {
+  position: relative;
+  margin-bottom: -37px;
+}
+
+.box {
+}
+
+.box-humans {
+  margin-left: 9%;
+}

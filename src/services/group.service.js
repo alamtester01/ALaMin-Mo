@@ -53,15 +53,14 @@ const addGroup = (groupName, groupDescription, groupMembers) => {
  *
  */
 const updateGroup = (groupID, groupName, groupDescription, groupMembers) => {
-  let formData = new FormData();
-
-  formData.append("groupID", groupID);
-  formData.append("groupName", groupName);
-  formData.append("groupDescription", groupDescription);
-  formData.append("groupMembers", groupMembers);
+  const params = {
+    group_name: groupName,
+    group_description: groupDescription,
+    group_members: groupMembers,
+  };
 
   return axios
-    .put(API_URL + "models/" + groupID + "/update", formData, {
+    .put(API_URL + "group/edit/" + groupID, params, {
       headers: {
         Authorization: `JWT ${localStorage.getItem("access")}`,
       },
@@ -72,19 +71,19 @@ const updateGroup = (groupID, groupName, groupDescription, groupMembers) => {
 };
 
 /**
- * Remove group information service that sends request and receives response data using axios
+ * Delete group information service that sends request and receives response data using axios
  *
  *
- * @method removeGroup
+ * @method deleteGroup
  *
  * @param {string} id - A string for identifying model
  *
  * @return {Promise}
  *
  */
-const removeGroup = (id) => {
+const deleteGroup = (id) => {
   return axios
-    .post(API_URL + "groups/" + id, {
+    .delete(API_URL + "group/delete/" + id, {
       headers: {
         Authorization: `JWT ${localStorage.getItem("access")}`,
       },
@@ -107,7 +106,7 @@ const removeGroup = (id) => {
  */
 const getGroup = (id) => {
   return axios
-    .get(API_URL + "groups/" + id, {
+    .get(API_URL + "group/view/" + id, {
       headers: {
         Authorization: `JWT ${localStorage.getItem("access")}`,
       },
@@ -138,7 +137,6 @@ const getAllGroups = () => {
     });
 };
 
-
 /**
  * Get all user information service that sends request and receives response data using axios
  *
@@ -160,13 +158,54 @@ const getAllUsers = () => {
     });
 };
 
+/**
+ * Add group members information service that sends request and receives response data using axios
+ *
+ *
+ * @method updateGroup
+ *
+ * @param {string} groupID - A string for identifying group
+ *
+ * @return {Promise}
+ *
+ */
+const addMembers = (groupID, groupMembers) => {
+  const params = {
+    group_members: groupMembers,
+  };
+
+  return axios
+    .put(API_URL + "group/member/add/" + groupID, params, {
+      headers: {
+        Authorization: `JWT ${localStorage.getItem("access")}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
+};
+
+const removeMember = (groupID, email) => {
+  return axios
+    .delete(API_URL + "group/member/delete/" + groupID + "/" + email, {
+      headers: {
+        Authorization: `JWT ${localStorage.getItem("access")}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
+};
+
 const groupServices = {
   addGroup,
   updateGroup,
-  removeGroup,
+  deleteGroup,
   getGroup,
   getAllGroups,
   getAllUsers,
+  addMembers,
+  removeMember,
 };
 
 export default groupServices;

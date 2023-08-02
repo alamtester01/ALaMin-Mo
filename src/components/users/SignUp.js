@@ -471,7 +471,7 @@ const Register = () => {
                     <div className="col-md-12 col-lg-12 col-xl-12 order-2 order-lg-1">
                       <div className="row">
                         <p className="text-left h2 mb-5 mx-1 mx-md-4 mt-4">
-                          Consumer Registration Form
+                          Create your account
                         </p>
                       </div>
 

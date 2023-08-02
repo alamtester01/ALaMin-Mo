@@ -40,22 +40,25 @@
 
 .button {
   background-color: #262262 !important;
-  
 }
 
 .main {
   display: flex !important;
   flex-wrap: nowrap !important;
-  height: 100vh !important;
-  height: -webkit-fill-available;
-  max-height: 100vh;
-  overflow-x: auto;
-  overflow-y: hidden;
+}
+
+.sidebar {
+  height: 100vh;
+}
+
+.nav-link {
+  color: #000 !important;
 }
 
 .nav-link.active {
-  background-color: #CFCEE3 !important;
+  background-color: #cfcee3 !important;
   color: #262262 !important;
+  font-family: "Montserrat Bold", "Montserrat Regular", "Montserrat", sans-serif;
 }
 
 .btn {
@@ -63,23 +66,360 @@
 }
 
 .dropdown-menu {
-  --bs-dropdown-link-active-bg: #262262 !important;
+  --bs-dropdown-link-active-bg: #e9ecef !important;
+  --bs-dropdown-link-active-color: #000 !important;
+}
+
+.bg-light-color {
+  background-color: rgba(244, 244, 247, 1);
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+  background-color: rgba(244, 244, 247, 1) !important;
 }
 
 .required-field:after {
-  content:"*";
-  color:red;
+  content: "*";
+  color: red;
 }
 
+.modal {
+  --bs-modal-border-radius: 5px !important;
+}
 .modal-60w {
   width: 60% !important;
   max-width: none !important;
+}
+
+.modal-35w {
+  width: 35% !important;
+  max-width: none !important;
+}
+
+.modal-35w > .modal-content {
+  height: 758px;
+}
+
+.modal-32w {
+  width: 32% !important;
+  max-width: none !important;
+}
+
+.modal-32w > .modal-content {
+  height: 294px;
+}
+
+.remove-modal {
+  text-align: center;
+}
+
+.remove-modal > .modal-content > .modal-body {
+  padding: 9% 9% !important;
 }
 
 .modal-body {
   padding: 4% !important;
 }
 
+.modal-header {
+  border-bottom: 0 !important;
+  padding: 4% 4% 0 4% !important;
+}
+
+.modal-footer {
+  border-top: 0 !important;
+  padding: 0 4% 4% 4% !important;
+}
+
+.modal-backdrop {
+  background-color: rgb(38, 34, 98) !important;
+}
+
 .icon {
   padding-right: 10px;
+}
+
+.cancel-btn {
+  box-sizing: border-box;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: rgba(221, 221, 221, 1) !important;
+  border-radius: 5px !important;
+  box-shadow: none;
+  color: #262262 !important;
+  padding: 7px 52px !important;
+}
+
+.submit-btn {
+  padding: 7px 52px !important;
+}
+
+.is-invalid > .rbt-input-multi {
+  border-color: #dc3545;
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 12 12%27 width=%2712%27 height=%2712%27 fill=%27none%27 stroke=%27%23dc3545%27%3e%3ccircle cx=%276%27 cy=%276%27 r=%274.5%27/%3e%3cpath stroke-linejoin=%27round%27 d=%27M5.8 3.6h.4L6 6.5z%27/%3e%3ccircle cx=%276%27 cy=%278.2%27 r=%27.6%27 fill=%27%23dc3545%27 stroke=%27none%27/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.success > .toast-header {
+  background-color: #9bdf9b !important;
+  border-color: green !important;
+  color: #000;
+}
+
+.error > .toast-header {
+  background-color: #ffffffd9 !important;
+  border-color: #dc3545 !important;
+  color: #000;
+}
+
+.breadcrumb-item.link > a {
+  color: #2e2e2e;
+  text-decoration: none;
+}
+
+.breadcrumb-item.link > a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: var(--bs-breadcrumb-divider, ">") !important;
+}
+
+.bold {
+  font-family: "Montserrat Bold", "Montserrat Regular", "Montserrat", sans-serif;
+}
+
+.semi-bold {
+  font-family: "Montserrat SemiBold", "Montserrat Regular", "Montserrat",
+    sans-serif;
+}
+
+.dropdown-toggle::after {
+  content: none !important;
+}
+
+.three-dot-dropdown-menu {
+  width: 12rem !important;
+}
+
+.three-dot-dropdown {
+  background-color: #fff !important;
+}
+
+.three-dot-dropdown.show {
+  background-color: #262262 !important;
+}
+
+.three-dot-dropdown:hover {
+  background-color: #cfcee3 !important;
+}
+
+.three-dot-dropdown.show > img {
+  filter: brightness(0%) invert(100%);
+}
+
+.save-icon {
+  background-color: #fff !important;
+}
+
+.save-icon.show {
+  background-color: #262262 !important;
+}
+
+.save-icon:hover {
+  background-color: #cfcee3 !important;
+}
+
+.save-icon.show > img {
+  filter: brightness(0%) invert(100%);
+}
+
+.three-dot-dropdown-table {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.three-dot-dropdown-table.show > img {
+  display: block;
+}
+
+.flex {
+  flex: 1 0 0px;
+}
+
+/* Note under input fields */
+.note {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 12px !important;
+  color: rgba(0, 0, 0, 0.996078431372549) !important;
+}
+
+/* Datatable header */
+.container > header {
+  padding: 4px 16px 4px 0px;
+  justify-content: space-between !important;
+}
+
+.rdt_TableHeader {
+  min-height: 0 !important;
+  padding: 0 !important;
+}
+
+.rdt_TableHeader {
+  font-weight: bold;
+  font-family: "Montserrat Bold", "Montserrat Regular", "Montserrat", sans-serif;
+}
+
+.rdt_TableHeadRow {
+  min-height: 38px !important;
+}
+
+.rdt_TableRow:hover {
+  background-color: #cfcee3;
+  cursor: pointer;
+}
+
+/* for the dropdown menu in the table head */
+.rdt_TableCol_Sortable {
+  overflow: visible !important;
+}
+
+.rdt_TableCol:hover {
+  background-color: #cfcee3;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.rdt_TableBody {
+  overflow: auto;
+  height: 650px;
+}
+
+/* description list */
+.content-container > p {
+  margin-bottom: 0;
+}
+
+.breadcrumb {
+  padding: 10px 0 0 0 !important;
+  margin: 0 !important;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 7px;
+}
+
+.search-input-container {
+  position: relative;
+}
+
+.search-input::placeholder {
+  color: rgb(153, 153, 153);
+}
+
+.search-input:hover {
+  color: rgb(153, 153, 153);
+}
+
+.arrow-down {
+  padding-left: 5px;
+}
+
+.add-member-list {
+  border: 0 !important;
+}
+
+.register-section {
+  margin: 5%;
+}
+
+.toolbar-hidden .ql-toolbar {
+  display: none;
+}
+
+.toolbar-display .ql-toolbar {
+  display: block;
+}
+
+.input-description {
+  height: 180px;
+}
+
+.ql-editor-170 .ql-container {
+  height: 170px !important;
+}
+
+.ql-editor-100 .ql-container {
+  height: 100px !important;
+}
+
+.ql-container.ql-snow {
+  border: 0 !important;
+}
+
+.rbt-close-content {
+  display: none;
+}
+
+.tabs {
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  padding: 0px 12px !important;
+}
+
+.tabs:hover {
+  background-color: #cfcee3 !important;
+}
+
+.tabs.active {
+  background-color: #fff !important;
+  border-bottom: 3px solid #262262 !important;
+}
+
+.progress-bar {
+  background-color: #262262 !important;
+}
+
+.toast-container {
+  position: fixed !important;
+}
+
+.mw-65 {
+  max-width: 65% !important;
+}
+
+.version {
+  position: fixed;
+  left: 5px;
+  bottom: 0;
+}
+
+.icon-list {
+  margin-right: 10px;
+}
+
+.labels > div > span {
+  padding: 10px;
+}
+.labels > div {
+  margin: 0 12px 15px 0;
+  border-radius: 5px;
+  border: 1px solid #dddddd;
+  background-color: #fefefe;
+  box-sizing: border-box;
+}
+
+.archived-label > span {
+  padding: 5px 15px;
+  border-radius: 5px;
+  background-color: #2e2e2e;
+  color: #fefefe;
+  box-sizing: border-box;
 }

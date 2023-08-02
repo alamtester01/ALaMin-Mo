@@ -134,7 +134,7 @@ const ForgotPassword = () => {
             <img
               src="/images/forgot_password.jpg"
               className="img-fluid"
-              alt="Sample image"
+              alt="image"
             />
           </div>
           <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">

@@ -1,4 +1,5 @@
 import {
+  DELETE_GROUP_SUCCESS,
   UPDATE_GROUP_SUCCESS,
   UPDATE_GROUP_FAIL,
   GET_GROUP_SUCCESS,
@@ -21,7 +22,7 @@ const initialState = { groups: {}, currentGroup: {}, users: {} };
  *
  * @method groupReducer
  *
- * @param {Object} state - An object for the groups state { groups: <object>, currentModel: <object> }
+ * @param {Object} state - An object for the groups state { groups: <object>, currentGroup: <object>, users: <object> }
  * @param {Object} action - An object that contains type and payload
  *
  * @return {Object}
@@ -34,7 +35,7 @@ export default function groupReducer(state = initialState, action) {
     case UPDATE_GROUP_SUCCESS:
       return {
         ...state,
-        currentGroup: payload,
+        currentGroup: [payload],
       };
     case UPDATE_GROUP_FAIL:
       return {
@@ -47,6 +48,11 @@ export default function groupReducer(state = initialState, action) {
         currentGroup: payload,
       };
     case GET_GROUP_FAIL:
+      return {
+        ...state,
+        currentGroup: {},
+      };
+    case DELETE_GROUP_SUCCESS:
       return {
         ...state,
         currentGroup: {},

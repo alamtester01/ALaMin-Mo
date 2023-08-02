@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Col, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
-import { Col, Dropdown } from "react-bootstrap";
-import { useState } from "react";
-import "react-bootstrap-typeahead/css/Typeahead.css";
 import CreateGroupModal from "components/groups/CreateGroupModal";
+import CreateModelModal from "components/models/CreateModelModal";
+
 /**
  * A module for the Sidebar Component
  * @module components/layout/Sidebar
@@ -16,65 +18,123 @@ import CreateGroupModal from "components/groups/CreateGroupModal";
  * @return {JSX.Element}
  *
  */
-const Sidebar = () => {
+const Sidebar = (props) => {
+  const location = useLocation();
+  import("../../styles/Sidebar.css");
   const [showGroupModal, setShowGroupModal] = useState(false);
+  const [showModelModal, setShowModelModal] = useState(false);
 
-  const handleClose = () => {
+  const handleGroupModalClose = () => {
     setShowGroupModal(false);
+  };
+
+  const handleModelModalClose = () => {
+    setShowModelModal(false);
   };
 
   return (
     <>
       <CreateGroupModal
         showGroupModal={showGroupModal}
-        handleClose={handleClose}
+        handleGroupModalClose={handleGroupModalClose}
+        setShowToast={props?.setShowToast}
+        setToastStatus={props?.setToastStatus}
       />
-      <Col className="col-md-2 bg-light">
+      <CreateModelModal
+        showModelModal={showModelModal}
+        handleModelModalClose={handleModelModalClose}
+        setShowToast={props?.setShowToast}
+        setToastStatus={props?.setToastStatus}
+      />
+      <Col className="sidebar-col col-md-2 bg-light-color">
         <div className="d-flex flex-column flex-shrink-0 p-3">
           <ul className="nav nav-pills flex-column mb-auto">
             <li className="nav-item">
               <Dropdown className="mb-9">
-                <Dropdown.Toggle className="button" id="dropdown-basic">
-                  <FontAwesomeIcon className="icon" icon={solid("plus")} />
+                <Dropdown.Toggle className="new button" id="dropdown-basic">
+                  <FontAwesomeIcon className="plus icon" icon={solid("plus")} />
                   New
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">
-                    <FontAwesomeIcon className="icon" icon={solid("cubes")} />
+                  <Dropdown.Item onClick={() => setShowModelModal(true)}>
+                    <img
+                      src="/images/new_dropdown_model.svg"
+                      className="icon"
+                      alt="model"
+                    />
                     Model Profile
                   </Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">
-                    <FontAwesomeIcon
+                  <Dropdown.Item href="#/dataset">
+                    <img
+                      src="/images/new_dropdown_dataset.svg"
                       className="icon"
-                      icon={solid("database")}
+                      alt="dataset"
                     />
                     Dataset Profile
                   </Dropdown.Item>
                   <Dropdown.Item onClick={() => setShowGroupModal(true)}>
-                    <FontAwesomeIcon className="icon" icon={solid("users")} />
+                    <img
+                      src="/images/new_dropdown_group.svg"
+                      className="icon"
+                      alt="group"
+                    />
                     Group
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </li>
             <li className="nav-item">
-              <a href="#" className="nav-link active" aria-current="page">
-                <FontAwesomeIcon className="icon" icon={solid("cubes")} />
+              <Link
+                to="/models"
+                className={`sidebar-item nav-link ${
+                  location.pathname.includes("models") && "active"
+                }`}
+              >
+                <img
+                  src={`/images/${
+                    location.pathname.includes("models")
+                      ? "sidebar_models.svg"
+                      : "sidebar_models_gray.svg"
+                  }`}
+                  className="icon"
+                  alt="models"
+                />
                 Models
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="nav-link link-dark">
-                <FontAwesomeIcon className="icon" icon={solid("database")} />
+              <a href="#" className="sidebar-item nav-link link-dark">
+                <img
+                  src={`/images/${
+                    location.pathname.includes("datasets")
+                      ? "sidebar_datasets.svg"
+                      : "sidebar_datasets_gray.svg"
+                  }`}
+                  className="icon"
+                  alt="datasets"
+                />
                 Datasets
               </a>
             </li>
             <li>
-              <a href="#" className="nav-link link-dark">
-                <FontAwesomeIcon className="icon" icon={solid("users")} />
+              <Link
+                to="/groups"
+                className={`sidebar-item nav-link ${
+                  location.pathname.includes("groups") && "active"
+                }`}
+              >
+                <img
+                  src={`/images/${
+                    location.pathname.includes("groups")
+                      ? "sidebar_groups.svg"
+                      : "sidebar_groups_gray.svg"
+                  }`}
+                  className="icon"
+                  alt="datasets"
+                />
                 Groups
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

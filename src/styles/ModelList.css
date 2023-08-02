@@ -1,0 +1,78 @@
+/* Custom styles for pagination */
+.pagination {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.pagination li {
+  margin: 0 0.5rem;
+}
+
+.pagination li a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pagination li.active a {
+  font-weight: bold;
+}
+
+.plus-members-count {
+  position:absolute;
+  margin-left: 10px;
+  padding: 3px 5px 2px 5px;
+  border-radius: 15px;
+  font-size: 12px;
+  background-color: rgb(244 244 247);
+}
+
+.content-container {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-model-list {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+.dropdown-model-list > span {
+  font-family: "Montserrat SemiBold", "Montserrat Regular", "Montserrat",
+    sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 16px;
+  color: #2e2e2e;
+}
+
+/* .dropdown-menu {
+  transition: transform 0.3s ease-in-out;
+}
+
+.slide-down {
+  transform-origin: top;
+  transform: translate(0px, 38px) scaleY(0);
+}
+
+.slide-down.show {
+  transform: translate(0px, 38px) scaleY(1) !important;
+} */
+
+.model-list-header {
+  display: inline-flex;
+}
+
+.search-input {
+  width: 470px;
+  height: 30px;
+}
+
+.slide-down {
+  inset: 100% auto auto auto !important;
+  transform: none !important;
+}
