@@ -109,14 +109,16 @@ const CreateGroupModal = (props) => {
     dispatch(addGroup(groupName, groupDescription, emails))
       .then((status) => {
         props.setToastStatus(status);
+        props.setToastImage("/images/group-success.svg");
         setDisabled(true);
         dispatch(getAllGroups()).catch((err) => console.log(err));
         if (status !== "error") {
           props.handleGroupModalClose();
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((status) => {
+        props.setToastStatus(status);
+        props.setToastImage("/images/group-success.svg");
       })
       .finally(() => {
         setDisabled(false);

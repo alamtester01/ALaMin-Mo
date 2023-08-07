@@ -73,10 +73,12 @@ const AddMemberModal = (props) => {
       dispatch(addMembers(props?.groupID, emails))
         .then((status) => {
           props.setToastStatus(status);
+          props.setToastImage("/images/add-member-success.svg");
           props.setRefreshCurrentGroupCount(props.refreshCurrentGroupCount + 1);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((status) => {
+          props.setToastStatus(status);
+          props.setToastImage("/images/add-member-success.svg");
         })
         .finally(() => {
           props.setShowToast(true);

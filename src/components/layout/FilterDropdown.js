@@ -16,6 +16,7 @@ const FilterDropdown = (props) => {
   const [startIndex, setStartIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
+  const [emptyListMessage, setEmptyListMessage] = useState([]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -61,7 +62,16 @@ const FilterDropdown = (props) => {
   };
 
   useEffect(() => {
-    props?.setSelectedOptions(selectedOptions);
+    if (props?.name === "created_by") {
+      const resultsArray = Object.values(selectedOptions).map(
+        (option) =>
+          Object.values(props?.options).find((opt) => opt.created_by === option)
+            ?.email
+      );
+      props?.setSelectedOptions(resultsArray);
+    } else {
+      props?.setSelectedOptions(selectedOptions);
+    }
   }, [selectedOptions]);
 
   useEffect(() => {
@@ -102,6 +112,16 @@ const FilterDropdown = (props) => {
     }
   }, [props?.options, searchTerm]);
 
+  useEffect(() => {
+    if (props?.name === "groups") {
+      setEmptyListMessage("You don't have any groups.");
+    } else if (props?.name === "subscriptions") {
+      setEmptyListMessage("You have no model subscriptions");
+    } else {
+      setEmptyListMessage("No results.");
+    }
+  }, [props?.name]);
+
   const totalOptions = filteredOptions.length;
   const pageSize = 10;
   const visibleOptions = showFullList
@@ -140,7 +160,7 @@ const FilterDropdown = (props) => {
           {filteredOptions.length === 0 ? (
             <p>
               {props.options.length === 0
-                ? "You don't have any groups."
+                ? emptyListMessage
                 : "No matched results"}
             </p>
           ) : (

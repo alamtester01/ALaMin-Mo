@@ -425,6 +425,7 @@ const GroupProfile = (props) => {
             handleAddMemberModalClose={handleAddMemberModalClose}
             setShowToast={props?.setShowToast}
             setToastStatus={props?.setToastStatus}
+            setToastImage={props?.setToastImage}
             setRefreshCurrentGroupCount={setRefreshCurrentGroupCount}
             refreshCurrentGroupCount={refreshCurrentGroupCount}
           />
@@ -449,6 +450,7 @@ const GroupProfile = (props) => {
             handleRemoveMemberModalClose={handleRemoveMemberModalClose}
             setShowToast={props?.setShowToast}
             setToastStatus={props?.setToastStatus}
+            setToastImage={props?.setToastImage}
             setRefreshCurrentGroupCount={setRefreshCurrentGroupCount}
             refreshCurrentGroupCount={refreshCurrentGroupCount}
           />

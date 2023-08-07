@@ -37,6 +37,7 @@ const ModelList = () => {
   const { groups, users } = useSelector((state) => state.group);
   const { user } = useSelector((state) => state.auth);
 
+  const [subscribed, setSubscribed] = useState(false);
   const [sortDirection, setSortDirection] = useState("desc");
   const [sortColumn, setSortColumn] = useState("Date created");
   const [expandedName, setExpandedName] = useState(false);
@@ -155,8 +156,22 @@ const ModelList = () => {
           />
         </div>
       ),
-      selector: (row) => <div>{row.model_profile_name}</div>,
-
+      cell: (row) => (
+        <div className="flex d-flex justify-content-between">
+          <div>{row.model_profile_name}</div>
+          <div onClick={() => setSubscribed(!subscribed)}>
+            <img
+              src={
+                subscribed
+                  ? "/images/subscribed.svg"
+                  : "/images/not-subscribed.svg"
+              }
+              className="img-fluid heart"
+              alt="menu"
+            />
+          </div>
+        </div>
+      ),
       width: "50%",
     },
     {
@@ -287,6 +302,12 @@ const ModelList = () => {
           const year = String(date.getFullYear());
 
           const formattedDate = `${month}/${day}/${year}`;
+          Object.values(selectedOptionsCreatedBy).map((option) => {
+            console.log(
+              Object.values(users).find((user) => user.email === option)
+            );
+          });
+
           return (
             (item.model_profile_name
               .toLowerCase()
@@ -400,7 +421,10 @@ const ModelList = () => {
 
       if (!uniqueUsers.has(item.model_created_by)) {
         uniqueUsers.add(item.model_created_by);
-        outputArray.push({ email: item.model_created_by, created_by: model_user_name });
+        outputArray.push({
+          email: item.model_created_by,
+          created_by: model_user_name,
+        });
       }
     });
 

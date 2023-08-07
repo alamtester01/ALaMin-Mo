@@ -62,8 +62,9 @@ const App = () => {
 
   const { isLoggedIn } = useSelector((state) => state.auth);
 
-  const [showToast, setShowToast] = useState(true);
+  const [showToast, setShowToast] = useState(null);
   const [toastStatus, setToastStatus] = useState(null);
+  const [toastImage, setToastImage] = useState("/images/model-success.svg");
 
   // Function to handle toast dismissal
   const handleDismiss = () => {
@@ -560,7 +561,9 @@ const App = () => {
   const downloadVersion = (modelFileID) => {
     setShowProgressBar_D(true);
     setCancelFileUpload_D(false);
-    setSelectedFile_D(currentModelVersion?.model_file[0]?.file.replace("/media/", ""))
+    setSelectedFile_D(
+      currentModelVersion?.model_file[0]?.file.replace("/media/", "")
+    );
     dispatch(
       downloadModelVersion(
         modelFileID,
@@ -599,6 +602,7 @@ const App = () => {
             <Sidebar
               setShowToast={setShowToast}
               setToastStatus={setToastStatus}
+              setToastImage={setToastImage}
             />
           )}
           <Col id="page-content-wrapper">
@@ -613,6 +617,7 @@ const App = () => {
                     <GroupProfile
                       setShowToast={setShowToast}
                       setToastStatus={setToastStatus}
+                      setToastImage={setToastImage}
                     />
                   }
                 />
@@ -902,7 +907,7 @@ const App = () => {
             filename={selectedFile_E?.name}
           />
         )}
-        {message && (
+        {true && (
           <ToastContainer
             className="p-3 position-fixed bottom-0 start-0"
             style={{ zIndex: 9999 }}
@@ -911,12 +916,22 @@ const App = () => {
               show={showToast}
               onClose={handleDismiss}
               delay={3000}
-              autohide
-              className={toastStatus === "success" ? "success" : "error"}
+              // autohide
+              className={`d-flex justify-content-between align-items-center p-3 ${toastStatus === "success" ? "success" : "error"}`}
             >
-              <Toast.Header closeButton={true}>
-                <strong className="me-auto">{message}</strong>
-              </Toast.Header>
+              <span><img
+                src={toastImage}
+                className="me-3 img-fluid"
+                alt="logo"
+              />
+              <span>{message}</span></span>
+              {/* <span><span className="bold">Model profile</span> created.</span> */}
+              <img
+                onClick={() => setShowToast(false)}
+                src="/images/close-toast.svg"
+                className="img-fluid"
+                alt="logo"
+              />
             </Toast>
           </ToastContainer>
         )}

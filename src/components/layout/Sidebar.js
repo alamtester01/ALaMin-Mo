@@ -39,12 +39,14 @@ const Sidebar = (props) => {
         handleGroupModalClose={handleGroupModalClose}
         setShowToast={props?.setShowToast}
         setToastStatus={props?.setToastStatus}
+        setToastImage={props?.setToastImage}
       />
       <CreateModelModal
         showModelModal={showModelModal}
         handleModelModalClose={handleModelModalClose}
         setShowToast={props?.setShowToast}
         setToastStatus={props?.setToastStatus}
+        setToastImage={props?.setToastImage}
       />
       <Col className="sidebar-col col-md-2 bg-light-color">
         <div className="d-flex flex-column flex-shrink-0 p-3">

@@ -64,7 +64,7 @@ export const addGroup =
           payload: message,
         });
 
-        return Promise.reject();
+        return Promise.reject("error");
       }
     );
   };
@@ -319,10 +319,10 @@ export const addMembers = (groupID, groupMembers) => (dispatch) => {
     (data) => {
       dispatch({
         type: SET_MESSAGE,
-        payload: "Member added.",
+        payload: data?.error || "Member added.",
       });
 
-      return Promise.resolve(data);
+      return Promise.resolve(data?.error ? "error" : "success");
     },
     (error) => {
       const message =
@@ -337,7 +337,7 @@ export const addMembers = (groupID, groupMembers) => (dispatch) => {
         payload: message,
       });
 
-      return Promise.reject();
+      return Promise.reject("error");
     }
   );
 };
@@ -360,10 +360,10 @@ export const removeMember = (groupID, email) => (dispatch) => {
     (data) => {
       dispatch({
         type: SET_MESSAGE,
-        payload: "Member removed.",
+        payload: data?.error || "Member removed.",
       });
 
-      return Promise.resolve(data);
+      return Promise.resolve(data?.error ? "error" : "success");
     },
     (error) => {
       const message =
@@ -378,7 +378,7 @@ export const removeMember = (groupID, email) => (dispatch) => {
         payload: message,
       });
 
-      return Promise.reject();
+      return Promise.reject("error");
     }
   );
 };

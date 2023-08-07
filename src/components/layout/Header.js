@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "actions/auth";
 import AuthVerify from "common/AuthVerify";
+import Notification from "./Notification";
+import Profile from "./Profile";
 
 /**
  * A module for the Header Component
@@ -26,15 +28,6 @@ const Header = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  /**
-   *  Navigates to the login after clicking logout button
-   * @method onClickLogout
-   */
-  const onClickLogout = () => {
-    dispatch(logout());
-    navigate("/");
-  };
-
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-light-color">
@@ -46,16 +39,11 @@ const Header = (props) => {
               alt="Model Store logo"
             />
           </a>
-          <div className="logout-div">
+          <div className="d-flex">
             {props?.isLoggedIn ? (
               <>
-                <Button
-                  className="button btn btn-primary"
-                  type="button"
-                  onClick={onClickLogout}
-                >
-                  Logout
-                </Button>
+                <Notification />
+                <Profile />
               </>
             ) : (
               <>
@@ -68,7 +56,7 @@ const Header = (props) => {
                 </Button>
               </>
             )}
-            <AuthVerify logout={onClickLogout} />
+            
           </div>
         </div>
       </nav>

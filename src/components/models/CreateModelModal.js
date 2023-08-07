@@ -114,14 +114,16 @@ const CreateModelModal = (props) => {
     )
       .then((status) => {
         props.setToastStatus(status);
+        props.setToastImage("/images/model-success.svg");
         setDisabled(true);
         dispatch(getAllModels()).catch((err) => console.log(err));
         if (status !== "error") {
           props.handleModelModalClose();
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((status) => {
+        props.setToastImage("/images/model-success.svg");
+        props.setToastStatus(status);
       })
       .finally(() => {
         setDisabled(false);

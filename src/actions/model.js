@@ -72,7 +72,7 @@ export const addModel =
           payload: message,
         });
 
-        return Promise.reject();
+        return Promise.reject("error");
       }
     );
   };

@@ -20,11 +20,13 @@ const RemoveMemberModal = (props) => {
   const handleFormSubmit = (e) => {
     dispatch(removeMember(props?.groupID, props?.memberEmail))
       .then((status) => {
-        props.setToastStatus(status);
+        props.setToastStatus("error");
+        props.setToastImage("/images/remove-member-success.svg");
         props.setRefreshCurrentGroupCount(props.refreshCurrentGroupCount + 1);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((status) => {
+        props.setToastStatus(status);
+        props.setToastImage("/images/remove-member-success.svg");
       })
       .finally(() => {
         props.setShowToast(true);

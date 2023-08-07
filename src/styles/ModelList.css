@@ -76,3 +76,7 @@
   inset: 100% auto auto auto !important;
   transform: none !important;
 }
+
+.heart {
+  width: 15px;
+}
