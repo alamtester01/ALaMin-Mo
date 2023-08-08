@@ -6,7 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers } from "actions/group";
 import CustomPagination from "components/layout/CustomPagination";
 import FilterDropdown from "components/layout/FilterDropdown";
-import { getAllModels } from "actions/model";
+import {
+  editSubscribeModelProfile,
+  getAllModels,
+  getAllSubscribeModelProfile,
+  subscribeModelProfile,
+  unsubscribeModelProfile,
+} from "actions/model";
 import { compareValues } from "common/constants";
 
 /**
@@ -33,7 +39,7 @@ const ModelList = () => {
    * * Redux store state
    * -------------------
    */
-  const { models } = useSelector((state) => state.model);
+  const { models, subscribedModels } = useSelector((state) => state.model);
   const { groups, users } = useSelector((state) => state.group);
   const { user } = useSelector((state) => state.auth);
 
@@ -45,6 +51,7 @@ const ModelList = () => {
   const [expandedGroup, setExpandedGroup] = useState(false);
   const [expandedCreatedBy, setExpandedCreatedBy] = useState(false);
   const [expandedDateCreated, setExpandedDateCreated] = useState(false);
+  const [refreshSubscribe, setRefreshSubscribe] = useState(0);
 
   const CustomDropdownToggle = React.forwardRef(
     ({ children, onClick }, ref) => {
@@ -141,6 +148,31 @@ const ModelList = () => {
     );
   };
 
+  const handleSubscribe = (id, isSubscribed) => {
+    if (isSubscribed) {
+      dispatch(unsubscribeModelProfile(subscribedModels[0]?.id, id))
+        .then((res) => {
+          setRefreshSubscribe(refreshSubscribe + 1)
+        })
+        .catch((err) => console.log(err));
+    } else {
+      console.log(subscribedModels.length);
+      if (!subscribedModels.length) {
+        dispatch(subscribeModelProfile(id))
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+      } else {
+        const subsArr = Object.values(
+          subscribedModels[0]?.subscribe_model_profile
+        );
+        subsArr.push(id);
+        console.log(subsArr);
+        dispatch(editSubscribeModelProfile(subscribedModels[0]?.id, subsArr))
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+      }
+    }
+  };
   /**
    * Columns template and configuration
    */
@@ -159,10 +191,10 @@ const ModelList = () => {
       cell: (row) => (
         <div className="flex d-flex justify-content-between">
           <div>{row.model_profile_name}</div>
-          <div onClick={() => setSubscribed(!subscribed)}>
+          <div onClick={() => handleSubscribe(row.id, row.model_subscribe)}>
             <img
               src={
-                subscribed
+                row?.model_subscribe
                   ? "/images/subscribed.svg"
                   : "/images/not-subscribed.svg"
               }
@@ -278,6 +310,10 @@ const ModelList = () => {
     },
   ];
 
+  useEffect(() => {
+    console.log(subscribedModels);
+  }, [subscribedModels]);
+
   /**
    * -------------------------
    * * Component state
@@ -293,6 +329,30 @@ const ModelList = () => {
     handleItemsPerPageChange(itemsPerPage);
     setFilteredItems(
       Object.values(models)
+        .map((item) => {
+          console.log(subscribedModels);
+          let model_subscribe = false;
+          if (subscribedModels.length > 0) {
+            const subscribe = Object.values(
+              subscribedModels[0]?.subscribe_model_profile
+            ).find((i) => i === item.id);
+            model_subscribe = subscribe ? true : false;
+          } else {
+            model_subscribe = false;
+          }
+          const updatedItem = {
+            id: item.id,
+            model_created_by: item.model_created_by,
+            model_date_create: item.model_date_create,
+            model_profile_description: item.model_profile_description,
+            model_profile_group: item.model_profile_group,
+            model_profile_name: item.model_profile_name,
+            model_profile_task: item.model_profile_task,
+            model_subscribe: model_subscribe,
+          };
+
+          return updatedItem;
+        })
         .filter((item) => {
           const dateString = item.model_date_create;
           const date = new Date(dateString);
@@ -396,6 +456,7 @@ const ModelList = () => {
     selectedOptionsCreatedBy,
     sortDirection,
     sortColumn,
+    subscribedModels,
   ]);
 
   const subHeaderComponentMemo = useMemo(() => {
@@ -476,6 +537,12 @@ const ModelList = () => {
   useEffect(() => {
     dispatch(getAllUsers()).catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    dispatch(getAllSubscribeModelProfile())
+      // .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  }, [refreshSubscribe]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(25);

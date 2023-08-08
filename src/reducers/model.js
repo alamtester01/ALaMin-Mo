@@ -12,6 +12,9 @@ import {
   UPDATE_MODEL_VERSION_SUCCESS,
   GET_ALL_ACCURACY_SUCCESS,
   GET_ALL_ACCURACY_FAIL,
+  SUBSCRIBE_MODEL_SUCCESS,
+  UNSUBSCRIBE_MODEL_SUCCESS,
+  GET_ALL_SUBSCRIBE_MODELS_SUCCESS,
 } from "../actions/types";
 /**
  * A module that manages model-related state
@@ -24,6 +27,7 @@ const initialState = {
   modelVersions: {},
   modelsAccuracy: {},
   currentModelVersion: {},
+  subscribedModels: {},
 };
 
 /**
@@ -105,6 +109,21 @@ export default function modelReducer(state = initialState, action) {
       return {
         ...state,
         modelsAccuracy: {},
+      };
+    case SUBSCRIBE_MODEL_SUCCESS:
+      return {
+        ...state,
+        subscribedModels: [payload],
+      };
+    case UNSUBSCRIBE_MODEL_SUCCESS:
+      return {
+        ...state,
+        subscribedModels: [payload],
+      };
+    case GET_ALL_SUBSCRIBE_MODELS_SUCCESS:
+      return {
+        ...state,
+        subscribedModels: payload,
       };
     default:
       return state;

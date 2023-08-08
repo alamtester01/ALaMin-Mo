@@ -78,7 +78,7 @@ const AddMemberModal = (props) => {
         })
         .catch((status) => {
           props.setToastStatus(status);
-          props.setToastImage("/images/add-member-success.svg");
+          props.setToastImage(null);
         })
         .finally(() => {
           props.setShowToast(true);

@@ -439,6 +439,7 @@ const GroupProfile = (props) => {
             handleEditGroupModalClose={handleEditGroupModalClose}
             setShowToast={props?.setShowToast}
             setToastStatus={props?.setToastStatus}
+            setToastImage={props?.setToastImage}
           />
 
           <RemoveMemberModal
@@ -460,6 +461,7 @@ const GroupProfile = (props) => {
             handleDeleteGroupModalClose={handleDeleteGroupModalClose}
             setShowToast={props?.setShowToast}
             setToastStatus={props?.setToastStatus}
+            setToastImage={props?.setToastImage}
           />
         </>
       )}

@@ -23,11 +23,13 @@ const DeleteModelModal = (props) => {
   const handleFormSubmit = (e) => {
     dispatch(deleteModel(props?.modelID))
       .then((status) => {
-        props.setToastStatus(status);
+        props.setToastImage("/images/remove-success.svg");
+        props.setToastStatus("error");
         navigate("/models");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((status) => {
+        props.setToastImage(null);
+        props.setToastStatus(status);
       })
       .finally(() => {
         props.setShowToast(true);

@@ -122,7 +122,7 @@ const CreateModelModal = (props) => {
         }
       })
       .catch((status) => {
-        props.setToastImage("/images/model-success.svg");
+        props.setToastImage(null);
         props.setToastStatus(status);
       })
       .finally(() => {

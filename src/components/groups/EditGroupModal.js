@@ -54,10 +54,12 @@ const EditGroupModal = (props) => {
     )
       .then((status) => {
         props.setToastStatus(status);
+        props.setToastImage("/images/edit-success.svg");
         setDisabled(true);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((status) => {
+        props.setToastStatus(status);
+        props?.setToastImage(null);
       })
       .finally(() => {
         setDisabled(false);

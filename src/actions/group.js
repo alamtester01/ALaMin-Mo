@@ -41,7 +41,7 @@ export const addGroup =
       (data) => {
         dispatch({
           type: SET_MESSAGE,
-          payload: data?.error || "Group created!",
+          payload: data?.error || "Group created.",
         });
 
         return Promise.resolve(data?.error ? "error" : "success");
@@ -102,10 +102,10 @@ export const updateGroup =
 
         dispatch({
           type: SET_MESSAGE,
-          payload: data?.error || "Group updated successfully!",
+          payload: data?.error || "Group profile updated.",
         });
 
-        return Promise.resolve(data);
+        return Promise.resolve(data?.error ? "error" : "success");
       },
       (error) => {
         const message =
@@ -124,7 +124,7 @@ export const updateGroup =
           payload: message,
         });
 
-        return Promise.reject();
+        return Promise.reject("error");
       }
     );
   };
@@ -153,7 +153,7 @@ export const deleteGroup = (id) => (dispatch) => {
         payload: data?.error || "Group deleted.",
       });
 
-      return Promise.resolve();
+      return Promise.resolve(data?.error ? "error" : "success");
     },
     (error) => {
       const message =
@@ -168,7 +168,7 @@ export const deleteGroup = (id) => (dispatch) => {
         payload: message,
       });
 
-      return Promise.reject();
+      return Promise.reject("error");
     }
   );
 };

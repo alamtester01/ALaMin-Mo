@@ -671,6 +671,7 @@ const ModelProfile = (props) => {
             handleDeleteModelModalClose={handleDeleteModelModalClose}
             setShowToast={props?.setShowToast}
             setToastStatus={props?.setToastStatus}
+            setToastImage={props?.setToastImage}
           />
           <EditModelModal
             modelID={id}
@@ -682,6 +683,7 @@ const ModelProfile = (props) => {
             handleEditModelModalClose={handleEditModelModalClose}
             setShowToast={props?.setShowToast}
             setToastStatus={props?.setToastStatus}
+            setToastImage={props?.setToastImage}
           />
         </>
       )}

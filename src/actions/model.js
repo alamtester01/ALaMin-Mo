@@ -12,6 +12,9 @@ import {
   GET_ALL_MODELS_VERSIONS_FAIL,
   GET_ALL_ACCURACY_FAIL,
   GET_ALL_ACCURACY_SUCCESS,
+  SUBSCRIBE_MODEL_SUCCESS,
+  UNSUBSCRIBE_MODEL_SUCCESS,
+  GET_ALL_SUBSCRIBE_MODELS_SUCCESS,
 } from "./types";
 import ModelService from "services/model.service";
 
@@ -46,7 +49,7 @@ export const addModel =
       (data) => {
         dispatch({
           type: SET_MESSAGE,
-          payload: data?.error || "Model created!",
+          payload: data?.error || "Model profile created.",
         });
 
         return Promise.resolve(data?.error ? "error" : "success");
@@ -138,7 +141,7 @@ export const editModel =
           payload: message,
         });
 
-        return Promise.reject();
+        return Promise.reject("error");
       }
     );
   };
@@ -251,7 +254,7 @@ export const editModelVersion =
           payload: message,
         });
 
-        return Promise.reject();
+        return Promise.reject("error");
       }
     );
   };
@@ -364,7 +367,7 @@ export const addModelVersionSaveDraft =
           payload: message,
         });
 
-        return Promise.reject();
+        return Promise.reject("error");
       }
     );
   };
@@ -477,7 +480,7 @@ export const addModelVersionSaveAndPublish =
           payload: message,
         });
 
-        return Promise.reject();
+        return Promise.reject("error");
       }
     );
   };
@@ -558,7 +561,7 @@ export const publishModelVersion = (modelFileID) => (dispatch) => {
         payload: data?.error || "Version is now published",
       });
 
-      return Promise.resolve();
+      return Promise.resolve(data?.error ? "error" : "success");
     },
     (error) => {
       const message =
@@ -573,7 +576,7 @@ export const publishModelVersion = (modelFileID) => (dispatch) => {
         payload: message,
       });
 
-      return Promise.reject();
+      return Promise.reject("error");
     }
   );
 };
@@ -586,7 +589,7 @@ export const archiveModelVersion = (modelFileID) => (dispatch) => {
         payload: data?.error || "Version archived",
       });
 
-      return Promise.resolve();
+      return Promise.resolve(data?.error ? "error" : "success");
     },
     (error) => {
       const message =
@@ -601,7 +604,7 @@ export const archiveModelVersion = (modelFileID) => (dispatch) => {
         payload: message,
       });
 
-      return Promise.reject();
+      return Promise.reject("error");
     }
   );
 };
@@ -615,7 +618,7 @@ export const deleteModelVersion = (modelFileID) => (dispatch) => {
         payload: data?.error || "Version deleted",
       });
 
-      return Promise.resolve();
+      return Promise.resolve(data?.error ? "error" : "success");
     },
     (error) => {
       const message =
@@ -630,7 +633,7 @@ export const deleteModelVersion = (modelFileID) => (dispatch) => {
         payload: message,
       });
 
-      return Promise.reject();
+      return Promise.reject("error");
     }
   );
 };
@@ -656,10 +659,10 @@ export const deleteModel = (id) => (dispatch) => {
 
       dispatch({
         type: SET_MESSAGE,
-        payload: data?.error || "Model deleted.",
+        payload: data?.error || "Model profile deleted.",
       });
 
-      return Promise.resolve();
+      return Promise.resolve(data?.error ? "error" : "success");
     },
     (error) => {
       const message =
@@ -674,7 +677,7 @@ export const deleteModel = (id) => (dispatch) => {
         payload: message,
       });
 
-      return Promise.reject();
+      return Promise.reject("error");
     }
   );
 };
@@ -935,3 +938,181 @@ export const downloadModelVersion =
       }
     );
   };
+
+/**
+ * Subscribe to the model profile
+ * success and error response action
+ *
+ *
+ * @method subscribeModelProfile
+ *
+ * @param {string} id - A string for identifying model
+ *
+ * @return {Promise}
+ *
+ */
+export const subscribeModelProfile = (modelProfileID) => (dispatch) => {
+  return ModelService.subscribeModelProfile(modelProfileID).then(
+    (data) => {
+      console.log(data);
+      dispatch({
+        type: SUBSCRIBE_MODEL_SUCCESS,
+        payload: data,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: data?.error || "Subscription added.",
+      });
+
+      return Promise.resolve(data?.error ? "error" : "success");
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.messages[0].message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+/**
+ * Unsubscribe to the model profile
+ * success and error response action
+ *
+ *
+ * @method unsubscribeModelProfile
+ *
+ * @param {string} id - A string for identifying model
+ *
+ * @return {Promise}
+ *
+ */
+export const unsubscribeModelProfile = (subscribeID, modelProfileID) => (dispatch) => {
+  return ModelService.unsubscribeModelProfile(subscribeID, modelProfileID).then(
+    (data) => {
+      console.log(data);
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: data?.error || "Subscription removed.",
+      });
+
+      return Promise.resolve(data?.error ? "error" : "success");
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.messages[0].message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+/**
+ * Edit subscribed to the model profile
+ * success and error response action
+ *
+ *
+ * @method editSubscribeModelProfile
+ *
+ * @param {string} id - A string for identifying model
+ *
+ * @return {Promise}
+ *
+ */
+export const editSubscribeModelProfile = (subscribeID, subsArr) => (dispatch) => {
+  return ModelService.editSubscribeModelProfile(subscribeID, subsArr).then(
+    (data) => {
+      console.log(data);
+      dispatch({
+        type: SUBSCRIBE_MODEL_SUCCESS,
+        payload: data,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: data?.error || "Subscription updated.",
+      });
+
+      return Promise.resolve(data?.error ? "error" : "success");
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.messages[0].message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+/**
+ * Get all subscribed models information
+ * success and error response action
+ *
+ *
+ * @method getAllSubscribeModelProfile
+ *
+ * @return {Promise}
+ *
+ */
+export const getAllSubscribeModelProfile = () => (dispatch) => {
+  return ModelService.getAllSubscribeModelProfile().then(
+    (data) => {
+      console.log(data);
+      dispatch({
+        type: GET_ALL_SUBSCRIBE_MODELS_SUCCESS,
+        payload: data,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      console.log(error);
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: GET_ALL_MODELS_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};

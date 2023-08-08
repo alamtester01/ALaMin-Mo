@@ -606,6 +606,67 @@ const downloadModelVersion = (modelFileID, onDownloadProgress, cancelToken) => {
     });
 };
 
+const subscribeModelProfile = (modelProfileID) => {
+  const data = {
+    subscribe_model_profile: [modelProfileID],
+  };
+  return axios
+    .post(API_URL + "subscribe/model_profile/", data, {
+      headers: {
+        Authorization: `JWT ${localStorage.getItem("access")}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
+};
+
+const unsubscribeModelProfile = (subscribeID, modelProfileID) => {
+  return axios
+    .delete(
+      API_URL +
+        "unsubscribe/model_profile/" +
+        subscribeID +
+        "/" +
+        modelProfileID,
+      {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response.data;
+    });
+};
+
+const editSubscribeModelProfile = (subscribeID, subsArr) => {
+  const data = {
+    subscribe_model_profile: subsArr,
+  };
+  return axios
+    .put(API_URL + "edit/subscribe/model_profile/" + subscribeID, data, {
+      headers: {
+        Authorization: `JWT ${localStorage.getItem("access")}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
+};
+
+const getAllSubscribeModelProfile = () => {
+  return axios
+    .get(API_URL + "get/subscribe/models", {
+      headers: {
+        Authorization: `JWT ${localStorage.getItem("access")}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
+};
+
 const modelServices = {
   addModel,
   editModel,
@@ -624,6 +685,10 @@ const modelServices = {
   getAllModelVersions,
   getAllAccuracy,
   downloadModelVersion,
+  subscribeModelProfile,
+  unsubscribeModelProfile,
+  editSubscribeModelProfile,
+  getAllSubscribeModelProfile,
 };
 
 export default modelServices;

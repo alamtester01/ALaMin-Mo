@@ -26,7 +26,7 @@ const RemoveMemberModal = (props) => {
       })
       .catch((status) => {
         props.setToastStatus(status);
-        props.setToastImage("/images/remove-member-success.svg");
+        props.setToastImage(null);
       })
       .finally(() => {
         props.setShowToast(true);

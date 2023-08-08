@@ -64,7 +64,7 @@ const App = () => {
 
   const [showToast, setShowToast] = useState(null);
   const [toastStatus, setToastStatus] = useState(null);
-  const [toastImage, setToastImage] = useState("/images/model-success.svg");
+  const [toastImage, setToastImage] = useState(null);
 
   // Function to handle toast dismissal
   const handleDismiss = () => {
@@ -242,13 +242,16 @@ const App = () => {
         modelDetails
       )
     )
-      .then((response) => {
+      .then((status) => {
         setShowToast(true);
-        console.log(response);
+        setToastStatus(status);
+        setToastImage("/images/add-version-draft-success.svg");
         setRefreshModelVersionsCount(refreshModelVersionsCount + 1);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((status) => {
+        setShowToast(true);
+        setToastStatus(status);
+        setToastImage(null);
       });
   };
 
@@ -297,13 +300,16 @@ const App = () => {
         modelDetails
       )
     )
-      .then((response) => {
+      .then((status) => {
         setShowToast(true);
-        console.log(response);
+        setToastStatus(status);
+        setToastImage("/images/add-version-publish-success.svg");
         setRefreshModelVersionsCount(refreshModelVersionsCount + 1);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((status) => {
+        setShowToast(true);
+        setToastStatus(status);
+        setToastImage(null);
       });
   };
 
@@ -485,13 +491,16 @@ const App = () => {
         modelDetails_E
       )
     )
-      .then((response) => {
+      .then((status) => {
         setShowToast(true);
-        console.log(response);
+        setToastStatus(status);
+        setToastImage("/images/edit-success.svg");
         setRefreshModelVersionsCount(refreshModelVersionsCount + 1);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((status) => {
+        setShowToast(true);
+        setToastStatus(status);
+        setToastImage(null);
       });
   };
 
@@ -502,40 +511,49 @@ const App = () => {
 
   const saveAndPublish = (modelFileID) => {
     dispatch(publishModelVersion(modelFileID))
-      .then((response) => {
+      .then((status) => {
         setShowToast(true);
-        console.log(response);
+        setToastStatus(status);
+        setToastImage("/images/publish-version-success.svg");
         setRefreshModelVersionsCount(refreshModelVersionsCount + 1);
         navigate("/models/view/" + currentModel[0]?.id + "?tab=2");
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((status) => {
+        setShowToast(true);
+        setToastStatus(status);
+        setToastImage(null);
       });
   };
 
   const archive = (modelFileID) => {
     dispatch(archiveModelVersion(modelFileID))
-      .then((response) => {
+      .then((status) => {
         setShowToast(true);
-        console.log(response);
+        setToastStatus(status);
+        setToastImage("/images/archive-success.svg");
         setRefreshModelVersionsCount(refreshModelVersionsCount + 1);
         navigate("/models/view/" + currentModel[0]?.id + "?tab=2");
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((status) => {
+        setShowToast(true);
+        setToastStatus(status);
+        setToastImage(null);
       });
   };
 
   const deleteVersion = (modelFileID) => {
     dispatch(deleteModelVersion(modelFileID))
-      .then((response) => {
+      .then((status) => {
         setShowToast(true);
-        console.log(response);
+        setToastStatus("error");
+        setToastImage("/images/remove-success.svg");
         setRefreshModelVersionsCount(refreshModelVersionsCount + 1);
         navigate("/models/view/" + currentModel[0]?.id + "?tab=2");
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((status) => {
+        setShowToast(true);
+        setToastStatus(status);
+        setToastImage(null);
       });
   };
 
@@ -627,6 +645,7 @@ const App = () => {
                     <ModelProfile
                       setShowToast={setShowToast}
                       setToastStatus={setToastStatus}
+                      setToastImage={setToastImage}
                       refreshModelVersionsCount={refreshModelVersionsCount}
                     />
                   }
@@ -637,6 +656,7 @@ const App = () => {
                     <ViewModelVersion
                       setShowToast={setShowToast}
                       setToastStatus={setToastStatus}
+                      setToastImage={setToastImage}
                       refreshModelVersionsCount={refreshModelVersionsCount}
                       saveAndPublish={saveAndPublish}
                       archive={archive}
@@ -655,6 +675,7 @@ const App = () => {
                       handleUploadFile={handleUploadFile}
                       setShowToast={setShowToast}
                       setToastStatus={setToastStatus}
+                      setToastImage={setToastImage}
                       modelNumber={modelNumber}
                       modelVersionName={modelVersionName}
                       modelVersionDescription={modelVersionDescription}
@@ -761,6 +782,7 @@ const App = () => {
                       handleSaveAndPublish={handleSaveAndPublish_E}
                       setShowToast={setShowToast}
                       setToastStatus={setToastStatus}
+                      setToastImage={setToastImage}
                       modelNumber={modelNumber_E}
                       modelVersionName={modelVersionName_E}
                       modelVersionDescription={modelVersionDescription_E}
@@ -917,14 +939,16 @@ const App = () => {
               onClose={handleDismiss}
               delay={3000}
               // autohide
-              className={`d-flex justify-content-between align-items-center p-3 ${toastStatus === "success" ? "success" : "error"}`}
+              className={`d-flex justify-content-between align-items-center p-3 ${
+                toastStatus === "success" ? "success" : "error"
+              }`}
             >
-              <span><img
-                src={toastImage}
-                className="me-3 img-fluid"
-                alt="logo"
-              />
-              <span>{message}</span></span>
+              <span>
+                {toastImage && (
+                  <img src={toastImage} className="me-3 img-fluid" alt="logo" />
+                )}
+                <span>{message}</span>
+              </span>
               {/* <span><span className="bold">Model profile</span> created.</span> */}
               <img
                 onClick={() => setShowToast(false)}

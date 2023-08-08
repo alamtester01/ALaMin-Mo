@@ -118,7 +118,7 @@ const CreateGroupModal = (props) => {
       })
       .catch((status) => {
         props.setToastStatus(status);
-        props.setToastImage("/images/group-success.svg");
+        props.setToastImage(null);
       })
       .finally(() => {
         setDisabled(false);

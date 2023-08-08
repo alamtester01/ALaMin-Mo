@@ -117,9 +117,11 @@ const EditModelModal = (props) => {
         if (status !== "error") {
           props.handleEditModelModalClose();
         }
+        props?.setToastImage("/images/edit-success.svg");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((status) => {
+        props.setToastStatus(status);
+        props?.setToastImage(null);
       })
       .finally(() => {
         setDisabled(false);

@@ -23,11 +23,13 @@ const DeleteGroupModal = (props) => {
   const handleFormSubmit = (e) => {
     dispatch(deleteGroup(props?.groupID))
       .then((status) => {
-        props.setToastStatus(status);
+        props.setToastStatus("error");
+        props.setToastImage("/images/remove-success.svg");
         navigate("/groups");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((status) => {
+        props.setToastStatus(status);
+        props.setToastImage("/images/remove-success.svg");
       })
       .finally(() => {
         props.setShowToast(true);

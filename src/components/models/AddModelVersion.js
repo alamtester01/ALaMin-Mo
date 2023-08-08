@@ -550,6 +550,9 @@ const AddModelVersion = (props) => {
       payload: "Version discarded.",
     });
     props?.setShowToast(true);
+    props?.setToastStatus("error")
+    props?.setToastImage("/images/remove-success.svg");
+    
   };
 
   return (
