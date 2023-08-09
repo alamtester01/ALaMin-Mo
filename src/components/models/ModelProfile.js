@@ -327,7 +327,7 @@ const ModelProfile = (props) => {
   useEffect(() => {
     if (
       currentModel[0]?.model_created_by === user.email ||
-      (modelGroup !== "Unassigned" &&
+      (modelGroup !== "Unassigned" && currentGroup[0]?.group_members && 
         Object.values(currentGroup[0]?.group_members).find(
           (group) => group.email === user.email
         ))
