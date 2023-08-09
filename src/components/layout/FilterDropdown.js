@@ -122,6 +122,12 @@ const FilterDropdown = (props) => {
     }
   }, [props?.name]);
 
+  useEffect(() => {
+    if (props?.options.length < 1) {
+      setSelectedOptions([])
+    }
+  }, [props?.options]);
+
   const totalOptions = filteredOptions.length;
   const pageSize = 10;
   const visibleOptions = showFullList
@@ -140,6 +146,12 @@ const FilterDropdown = (props) => {
         id="dropdown-filter-toggle"
       >
         {props?.filterTitle}
+        {selectedOptions[0] && ": " + selectedOptions[0]}
+        {selectedOptions.length > 1 && (
+          <span className="plus-filters-count">
+            +{selectedOptions.length - 1}
+          </span>
+        )}
         <img
           src={
             expanded ? "/images/arrow_down_white.svg" : "/images/arrow_down.svg"
@@ -158,7 +170,7 @@ const FilterDropdown = (props) => {
             className="input-search"
           />
           {filteredOptions.length === 0 ? (
-            <p>
+            <p className="m-5 text-center">
               {props.options.length === 0
                 ? emptyListMessage
                 : "No matched results"}

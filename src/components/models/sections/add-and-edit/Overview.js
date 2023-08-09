@@ -205,11 +205,11 @@ const Overview = (props) => {
               type="file"
               onChange={handleFileChange}
               style={{ display: "none" }}
-              accept=".h5, .hdf5, .he5"
+              accept=".h5, .hdf5, .he5, .pb, .pt, .safetensors"
             />
           </div>
           {props?.getFormErrorMessage("modelFile")}
-          <span className="note">Support HDF5 format (h5, hdf5, he5).</span>
+          <span className="note">Supported formats(.h5, .hdf5, .he5, .pb, .pt, .safetensors).</span>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label className="required-field semi-bold">Author</Form.Label>

@@ -628,7 +628,16 @@ const App = () => {
               {/* PROTECTED ROUTES */}
               <Route element={<RequireAuth />}>
                 <Route path="/groups" element={<GroupList />} />
-                <Route path="/models" element={<ModelList />} />
+                <Route
+                  path="/models"
+                  element={
+                    <ModelList
+                      setShowToast={setShowToast}
+                      setToastStatus={setToastStatus}
+                      setToastImage={setToastImage}
+                    />
+                  }
+                />
                 <Route
                   path="/groups/view/:id"
                   element={
@@ -929,7 +938,7 @@ const App = () => {
             filename={selectedFile_E?.name}
           />
         )}
-        {true && (
+        {message && (
           <ToastContainer
             className="p-3 position-fixed bottom-0 start-0"
             style={{ zIndex: 9999 }}
@@ -938,8 +947,8 @@ const App = () => {
               show={showToast}
               onClose={handleDismiss}
               delay={3000}
-              // autohide
-              className={`d-flex justify-content-between align-items-center p-3 ${
+              autohide
+              className={`message d-flex justify-content-between align-items-center p-3 ${
                 toastStatus === "success" ? "success" : "error"
               }`}
             >

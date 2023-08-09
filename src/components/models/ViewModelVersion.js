@@ -312,7 +312,7 @@ const ViewModelVersion = (props) => {
       payload: "Version discarded.",
     });
     props?.setShowToast(true);
-    props?.setToastStatus("error")
+    props?.setToastStatus("error");
     props?.setToastImage("/images/remove-success.svg");
   };
 
@@ -454,12 +454,16 @@ const ViewModelVersion = (props) => {
         if (
           (extensionName !== "h5" &&
             extensionName !== "hdf5" &&
-            extensionName !== "he5") ||
+            extensionName !== "he5" &&
+            extensionName !== "pb" &&
+            extensionName !== "pt" &&
+            extensionName !== "safetensors") ||
           value === ""
         ) {
           setError(
             Object.assign(error, {
-              [name]: "Support HDF5 format (h5, hdf5, he5).",
+              [name]:
+                "Supported formats (.h5, .hdf5, .he5, .pb, .pt, .safetensors).",
             })
           );
           setModelFile("");
@@ -646,8 +650,8 @@ const ViewModelVersion = (props) => {
   };
 
   const onClickDownload = () => {
-    props?.downloadModelVersion(modelFileID)
-  }
+    props?.downloadModelVersion(modelFileID);
+  };
 
   return (
     <>
@@ -772,19 +776,21 @@ const ViewModelVersion = (props) => {
                   <span>Archived version</span>
                 </div>
               ))}
-            <OverlayTrigger
-              placement="top"
-              overlay={<Tooltip>Download</Tooltip>}
-              trigger={["hover", "focus"]}
-            >
-              <Button className="save-icon" onClick={() => onClickDownload()}>
-                <img
-                  src="/images/download.svg"
-                  className="img-fluid save-icon"
-                  alt="download"
-                />
-              </Button>
-            </OverlayTrigger>
+            {!isPublish && (
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip>Download</Tooltip>}
+                trigger={["hover", "focus"]}
+              >
+                <Button className="save-icon" onClick={() => onClickDownload()}>
+                  <img
+                    src="/images/download.svg"
+                    className="img-fluid save-icon"
+                    alt="download"
+                  />
+                </Button>
+              </OverlayTrigger>
+            )}
           </div>
         </div>
         <Tabs

@@ -325,14 +325,18 @@ const AddModelVersion = (props) => {
         if (
           (extensionName !== "h5" &&
             extensionName !== "hdf5" &&
-            extensionName !== "he5") ||
+            extensionName !== "he5" &&
+            extensionName !== "pb" &&
+            extensionName !== "pt" &&
+            extensionName !== "safetensors") ||
           value === ""
         ) {
           setCounter(counter + 1);
           setIsValid(Object.assign(isValid, { [name]: false }));
           setError(
             Object.assign(error, {
-              [name]: "Support HDF5 format (h5, hdf5, he5).",
+              [name]:
+                "Supported formats (.h5, .hdf5, .he5, .pb, .pt, .safetensors).",
             })
           );
           props?.setSelectedFile("");
@@ -550,9 +554,8 @@ const AddModelVersion = (props) => {
       payload: "Version discarded.",
     });
     props?.setShowToast(true);
-    props?.setToastStatus("error")
+    props?.setToastStatus("error");
     props?.setToastImage("/images/remove-success.svg");
-    
   };
 
   return (

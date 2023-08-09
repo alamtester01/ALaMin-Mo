@@ -28,7 +28,7 @@ import { compareValues } from "common/constants";
  *
  */
 
-const ModelList = () => {
+const ModelList = (props) => {
   import("styles/ModelList.css");
 
   const navigate = useNavigate();
@@ -43,7 +43,6 @@ const ModelList = () => {
   const { groups, users } = useSelector((state) => state.group);
   const { user } = useSelector((state) => state.auth);
 
-  const [subscribed, setSubscribed] = useState(false);
   const [sortDirection, setSortDirection] = useState("desc");
   const [sortColumn, setSortColumn] = useState("Date created");
   const [expandedName, setExpandedName] = useState(false);
@@ -148,30 +147,58 @@ const ModelList = () => {
     );
   };
 
-  const handleSubscribe = (id, isSubscribed) => {
+  const handleSubscribe = (id, isSubscribed, event) => {
     if (isSubscribed) {
       dispatch(unsubscribeModelProfile(subscribedModels[0]?.id, id))
-        .then((res) => {
-          setRefreshSubscribe(refreshSubscribe + 1)
+        .then((status) => {
+          props.setShowToast(true);
+          props.setToastStatus(status);
+          props.setToastImage("/images/subscription-removed-success.svg");
+          setRefreshSubscribe(refreshSubscribe + 1);
         })
-        .catch((err) => console.log(err));
+        .catch((status) => {
+          props.setShowToast(true);
+          props.setToastStatus(status);
+          props.setToastImage(null);
+        });
     } else {
-      console.log(subscribedModels.length);
       if (!subscribedModels.length) {
         dispatch(subscribeModelProfile(id))
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
+          .then((status) => {
+            props.setShowToast(true);
+            props.setToastStatus(status);
+            props.setToastImage("/images/subscription-added-success.svg");
+          })
+          .catch((status) => {
+            props.setShowToast(true);
+            props.setToastStatus(status);
+            props.setToastImage(null);
+          });
       } else {
         const subsArr = Object.values(
           subscribedModels[0]?.subscribe_model_profile
         );
         subsArr.push(id);
-        console.log(subsArr);
-        dispatch(editSubscribeModelProfile(subscribedModels[0]?.id, subsArr))
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
+        dispatch(
+          editSubscribeModelProfile(
+            subscribedModels[0]?.id,
+            subsArr,
+            !isSubscribed
+          )
+        )
+          .then((status) => {
+            props.setShowToast(true);
+            props.setToastStatus(status);
+            props.setToastImage("/images/subscription-added-success.svg");
+          })
+          .catch((status) => {
+            props.setShowToast(true);
+            props.setToastStatus(status);
+            props.setToastImage(null);
+          });
       }
     }
+    event.stopPropagation();
   };
   /**
    * Columns template and configuration
@@ -189,9 +216,12 @@ const ModelList = () => {
         </div>
       ),
       cell: (row) => (
-        <div className="flex d-flex justify-content-between">
+        <div
+          className="flex d-flex justify-content-between"
+          onClick={() => handleRowClick(row)}
+        >
           <div>{row.model_profile_name}</div>
-          <div onClick={() => handleSubscribe(row.id, row.model_subscribe)}>
+          <div onClick={(event) => handleSubscribe(row.id, row.model_subscribe, event)}>
             <img
               src={
                 row?.model_subscribe
@@ -310,10 +340,6 @@ const ModelList = () => {
     },
   ];
 
-  useEffect(() => {
-    console.log(subscribedModels);
-  }, [subscribedModels]);
-
   /**
    * -------------------------
    * * Component state
@@ -330,15 +356,12 @@ const ModelList = () => {
     setFilteredItems(
       Object.values(models)
         .map((item) => {
-          console.log(subscribedModels);
           let model_subscribe = false;
           if (subscribedModels.length > 0) {
             const subscribe = Object.values(
               subscribedModels[0]?.subscribe_model_profile
             ).find((i) => i === item.id);
             model_subscribe = subscribe ? true : false;
-          } else {
-            model_subscribe = false;
           }
           const updatedItem = {
             id: item.id,
@@ -398,6 +421,9 @@ const ModelList = () => {
               : true) &&
             (selectedOptionsCreatedBy.length > 0
               ? selectedOptionsCreatedBy.includes(item.model_created_by)
+              : true) &&
+            (selectedOptionsSubscriptions.length > 0
+              ? selectedOptionsSubscriptions.includes(item.model_profile_name)
               : true)
           );
         })
@@ -454,6 +480,7 @@ const ModelList = () => {
     filterText,
     selectedOptionsTasks,
     selectedOptionsCreatedBy,
+    selectedOptionsSubscriptions,
     sortDirection,
     sortColumn,
     subscribedModels,
@@ -463,6 +490,7 @@ const ModelList = () => {
     // Create an empty Set to store unique tasks
     const uniqueTasks = new Set();
     const uniqueUsers = new Set();
+    const modelProfiles = new Set();
     const outputArray = [];
 
     // Iterate through the inputArray and add each task to the Set
@@ -470,7 +498,7 @@ const ModelList = () => {
       uniqueTasks.add(item.model_profile_task)
     );
 
-    // Iterate through the inputArray and add each task to the Set
+    // Iterate through the inputArray and add each model to the Set
     Object.values(models).forEach((item) => {
       const model_user = Object.values(users).find(
         (user) => user.email === item.model_created_by
@@ -489,9 +517,22 @@ const ModelList = () => {
       }
     });
 
+    if (subscribedModels.length > 0) {
+      // Iterate through the inputArray and add each subscribed model profiles to the Set
+      Object.values(subscribedModels[0]?.subscribe_model_profile).forEach(
+        (subscribedID) => {
+          const model = Object.values(models).find(
+            (model) => model.id === subscribedID
+          );
+          model && modelProfiles.add(model.model_profile_name);
+        }
+      );
+    }
+
     // Convert the Set back to an array
     const filteredTasks = Array.from(uniqueTasks);
     const filteredCreatedBy = Array.from(outputArray);
+    const filteredSubscriptions = Array.from(modelProfiles);
 
     return (
       <div className="model-list-header">
@@ -523,12 +564,12 @@ const ModelList = () => {
         <FilterDropdown
           setSelectedOptions={setSelectedOptionsSubscriptions}
           filterTitle="Subscriptions"
-          options={[]}
+          options={filteredSubscriptions}
           name="subscriptions"
         />
       </div>
     );
-  }, [models, users]);
+  }, [models, users, subscribedModels]);
 
   useEffect(() => {
     dispatch(getAllModels()).catch((err) => console.log(err));

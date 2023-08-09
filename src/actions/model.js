@@ -241,7 +241,6 @@ export const editModelVersion =
         return Promise.resolve(data?.error ? "error" : "success");
       },
       (error) => {
-        console.log(error);
         const message =
           (error.response &&
             error.response.data &&
@@ -354,7 +353,6 @@ export const addModelVersionSaveDraft =
         return Promise.resolve(data?.error ? "error" : "success");
       },
       (error) => {
-        console.log(error);
         const message =
           (error.response &&
             error.response.data &&
@@ -467,7 +465,6 @@ export const addModelVersionSaveAndPublish =
         return Promise.resolve(data?.error ? "error" : "success");
       },
       (error) => {
-        console.log(error);
         const message =
           (error.response &&
             error.response.data &&
@@ -612,7 +609,6 @@ export const archiveModelVersion = (modelFileID) => (dispatch) => {
 export const deleteModelVersion = (modelFileID) => (dispatch) => {
   return ModelService.deleteModelVersion(modelFileID).then(
     (data) => {
-      console.log(data);
       dispatch({
         type: SET_MESSAGE,
         payload: data?.error || "Version deleted",
@@ -791,7 +787,6 @@ export const getAllModels = () => (dispatch) => {
       return Promise.resolve();
     },
     (error) => {
-      console.log(error);
       const message =
         (error.response &&
           error.response.data &&
@@ -834,7 +829,6 @@ export const getAllModelVersions = (modelProfileID) => (dispatch) => {
       return Promise.resolve();
     },
     (error) => {
-      console.log(error);
       const message =
         (error.response &&
           error.response.data &&
@@ -877,7 +871,6 @@ export const getAllAccuracy = (modelProfileID) => (dispatch) => {
       return Promise.resolve();
     },
     (error) => {
-      console.log(error);
       const message =
         (error.response &&
           error.response.data &&
@@ -954,7 +947,6 @@ export const downloadModelVersion =
 export const subscribeModelProfile = (modelProfileID) => (dispatch) => {
   return ModelService.subscribeModelProfile(modelProfileID).then(
     (data) => {
-      console.log(data);
       dispatch({
         type: SUBSCRIBE_MODEL_SUCCESS,
         payload: data,
@@ -997,35 +989,37 @@ export const subscribeModelProfile = (modelProfileID) => (dispatch) => {
  * @return {Promise}
  *
  */
-export const unsubscribeModelProfile = (subscribeID, modelProfileID) => (dispatch) => {
-  return ModelService.unsubscribeModelProfile(subscribeID, modelProfileID).then(
-    (data) => {
-      console.log(data);
+export const unsubscribeModelProfile =
+  (subscribeID, modelProfileID) => (dispatch) => {
+    return ModelService.unsubscribeModelProfile(
+      subscribeID,
+      modelProfileID
+    ).then(
+      (data) => {
+        dispatch({
+          type: SET_MESSAGE,
+          payload: data?.error || "Subscription removed.",
+        });
 
-      dispatch({
-        type: SET_MESSAGE,
-        payload: data?.error || "Subscription removed.",
-      });
+        return Promise.resolve(data?.error ? "error" : "success");
+      },
+      (error) => {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.messages[0].message) ||
+          error.message ||
+          error.toString();
 
-      return Promise.resolve(data?.error ? "error" : "success");
-    },
-    (error) => {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.messages[0].message) ||
-        error.message ||
-        error.toString();
+        dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+        });
 
-      dispatch({
-        type: SET_MESSAGE,
-        payload: message,
-      });
-
-      return Promise.reject();
-    }
-  );
-};
+        return Promise.reject("error");
+      }
+    );
+  };
 
 /**
  * Edit subscribed to the model profile
@@ -1039,39 +1033,39 @@ export const unsubscribeModelProfile = (subscribeID, modelProfileID) => (dispatc
  * @return {Promise}
  *
  */
-export const editSubscribeModelProfile = (subscribeID, subsArr) => (dispatch) => {
-  return ModelService.editSubscribeModelProfile(subscribeID, subsArr).then(
-    (data) => {
-      console.log(data);
-      dispatch({
-        type: SUBSCRIBE_MODEL_SUCCESS,
-        payload: data,
-      });
+export const editSubscribeModelProfile =
+  (subscribeID, subsArr) => (dispatch) => {
+    return ModelService.editSubscribeModelProfile(subscribeID, subsArr).then(
+      (data) => {
+        dispatch({
+          type: SUBSCRIBE_MODEL_SUCCESS,
+          payload: data,
+        });
 
-      dispatch({
-        type: SET_MESSAGE,
-        payload: data?.error || "Subscription updated.",
-      });
+        dispatch({
+          type: SET_MESSAGE,
+          payload: data?.error || "Subscription added.",
+        });
 
-      return Promise.resolve(data?.error ? "error" : "success");
-    },
-    (error) => {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.messages[0].message) ||
-        error.message ||
-        error.toString();
+        return Promise.resolve(data?.error ? "error" : "success");
+      },
+      (error) => {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.messages[0].message) ||
+          error.message ||
+          error.toString();
 
-      dispatch({
-        type: SET_MESSAGE,
-        payload: message,
-      });
+        dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+        });
 
-      return Promise.reject();
-    }
-  );
-};
+        return Promise.reject("error");
+      }
+    );
+  };
 
 /**
  * Get all subscribed models information
@@ -1086,7 +1080,6 @@ export const editSubscribeModelProfile = (subscribeID, subsArr) => (dispatch) =>
 export const getAllSubscribeModelProfile = () => (dispatch) => {
   return ModelService.getAllSubscribeModelProfile().then(
     (data) => {
-      console.log(data);
       dispatch({
         type: GET_ALL_SUBSCRIBE_MODELS_SUCCESS,
         payload: data,
@@ -1095,7 +1088,6 @@ export const getAllSubscribeModelProfile = () => (dispatch) => {
       return Promise.resolve();
     },
     (error) => {
-      console.log(error);
       const message =
         (error.response &&
           error.response.data &&

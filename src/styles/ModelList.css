@@ -20,7 +20,7 @@
 }
 
 .plus-members-count {
-  position:absolute;
+  position: absolute;
   margin-left: 10px;
   padding: 3px 5px 2px 5px;
   border-radius: 15px;
@@ -41,7 +41,7 @@
   height: 100%;
 }
 
-.dropdown-model-list > span {
+.dropdown-model-list>span {
   font-family: "Montserrat SemiBold", "Montserrat Regular", "Montserrat",
     sans-serif;
   font-weight: 600;

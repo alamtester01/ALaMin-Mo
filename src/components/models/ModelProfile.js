@@ -14,7 +14,15 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGroups, getAllUsers, getGroup } from "actions/group";
 import CustomPagination from "../layout/CustomPagination";
-import { getAllAccuracy, getAllModelVersions, getModel } from "actions/model";
+import {
+  editSubscribeModelProfile,
+  getAllAccuracy,
+  getAllModelVersions,
+  getAllSubscribeModelProfile,
+  getModel,
+  subscribeModelProfile,
+  unsubscribeModelProfile,
+} from "actions/model";
 import DeleteModelModal from "./DeleteModelModal";
 import { compareValues, convertDate } from "common/constants";
 import EditModelModal from "./EditModelModal";
@@ -278,9 +286,8 @@ const ModelProfile = (props) => {
    * * Redux store state
    * -------------------
    */
-  const { currentModel, modelVersions, modelsAccuracy } = useSelector(
-    (state) => state.model
-  );
+  const { currentModel, modelVersions, modelsAccuracy, subscribedModels } =
+    useSelector((state) => state.model);
   const { groups, currentGroup, users } = useSelector((state) => state.group);
   const { user } = useSelector((state) => state.auth);
 
@@ -295,6 +302,8 @@ const ModelProfile = (props) => {
   const [refreshCurrentModelCount, setRefreshCurrentModelCount] = useState(0);
   const [showDeleteModelModal, setShowDeleteModelModal] = useState(false);
   const [showEditModelModal, setShowEditModelModal] = useState(false);
+  const [refreshSubscribe, setRefreshSubscribe] = useState(0);
+  const [subscribed, setSubscribed] = useState(false);
 
   const handleDeleteModelModalClose = () => {
     setShowDeleteModelModal(false);
@@ -313,6 +322,12 @@ const ModelProfile = (props) => {
   useEffect(() => {
     // console.log(modelsAccuracy);
   }, [modelsAccuracy]);
+
+  useEffect(() => {
+    dispatch(getAllSubscribeModelProfile())
+      // .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  }, [refreshSubscribe]);
 
   useEffect(() => {
     setModelName(currentModel[0]?.model_profile_name);
@@ -340,9 +355,17 @@ const ModelProfile = (props) => {
         (error) => console.log(error)
       );
     }
-  }, [currentModel]);
+    if (subscribedModels.length > 0) {
+      console.log(subscribedModels);
+      const subscribe = Object.values(
+        subscribedModels[0]?.subscribe_model_profile
+      ).find((i) => i === currentModel[0]?.id);
+      setSubscribed(subscribe ? true : false);
+    }
+  }, [currentModel, subscribedModels]);
 
   useEffect(() => {
+    setSubscribed(false);
     setModelName("");
     setModelTask("");
     setModelDescription("");
@@ -661,6 +684,56 @@ const ModelProfile = (props) => {
     navigate("/models/view/version/" + row.id);
   };
 
+  const handleSubscribe = () => {
+    const modelProfileID = parseInt(id);
+    if (subscribed) {
+      dispatch(unsubscribeModelProfile(subscribedModels[0]?.id, modelProfileID))
+        .then((status) => {
+          setSubscribed(!subscribed);
+          props.setShowToast(true);
+          props.setToastStatus(status);
+          props.setToastImage("/images/subscription-removed-success.svg");
+        })
+        .catch((status) => {
+          props.setShowToast(true);
+          props.setToastStatus(status);
+          props.setToastImage(null);
+        });
+    } else {
+      if (!subscribedModels.length) {
+        dispatch(subscribeModelProfile(modelProfileID))
+          .then((status) => {
+            props.setShowToast(true);
+            props.setToastStatus(status);
+            props.setToastImage("/images/subscription-added-success.svg");
+            setSubscribed(!subscribed);
+          })
+          .catch((status) => {
+            props.setShowToast(true);
+            props.setToastStatus(status);
+            props.setToastImage(null);
+          });
+      } else {
+        const subsArr = Object.values(
+          subscribedModels[0]?.subscribe_model_profile
+        );
+        subsArr.push(modelProfileID);
+        dispatch(editSubscribeModelProfile(subscribedModels[0]?.id, subsArr))
+          .then((status) => {
+            props.setShowToast(true);
+            props.setToastStatus(status);
+            props.setToastImage("/images/subscription-added-success.svg");
+            setSubscribed(!subscribed);
+          })
+          .catch((status) => {
+            props.setShowToast(true);
+            props.setToastStatus(status);
+            props.setToastImage(null);
+          });
+      }
+    }
+  };
+
   return (
     <>
       {currentModel[0] && currentModel[0]?.model_created_by === user.email && (
@@ -700,49 +773,77 @@ const ModelProfile = (props) => {
         </Breadcrumb>
         <div className="d-flex justify-content-between">
           <p className="model-name-profile">{modelName}</p>
-          {currentModel[0]?.model_created_by === user.email && (
-            <Dropdown>
-              <OverlayTrigger
-                placement="top"
-                overlay={<Tooltip>More</Tooltip>}
-                trigger={["hover", "focus"]}
+          <span className="d-flex align-items-center">
+            <OverlayTrigger
+              placement="left"
+              overlay={
+                <Tooltip>{subscribed ? "Unsubscribe" : "Subscribe"}</Tooltip>
+              }
+              trigger={["hover", "focus"]}
+            >
+              <Button
+                onClick={handleSubscribe}
+                className="three-dot-dropdown"
+                variant="secondary"
               >
-                <Dropdown.Toggle
-                  variant="secondary"
-                  className="three-dot-dropdown"
+                <img
+                  src={
+                    subscribed
+                      ? "/images/subscribed.svg"
+                      : "/images/not-subscribed.svg"
+                  }
+                  className="img-fluid heart-20p"
+                  alt="subscribe"
+                />
+              </Button>
+            </OverlayTrigger>
+            {currentModel[0]?.model_created_by === user.email && (
+              <Dropdown>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={<Tooltip>More</Tooltip>}
+                  trigger={["hover", "focus"]}
                 >
-                  <img
-                    src="/images/three_dot_menu.svg"
-                    className="img-fluid"
-                    alt="menu"
-                  />
-                </Dropdown.Toggle>
-              </OverlayTrigger>
-
-              <Dropdown.Menu className="three-dot-dropdown-menu">
-                <Dropdown.Item onClick={() => setShowEditModelModal(true)}>
-                  <img
-                    src="/images/edit.svg"
-                    className="img-fluid icon-list"
-                    alt="edit"
-                  />
-                  Edit profile card
-                </Dropdown.Item>
-                {(filteredItems?.find((item) => item.status === "Published") ===
-                  undefined ||
-                  filteredItems.length === 0) && (
-                  <Dropdown.Item onClick={() => setShowDeleteModelModal(true)}>
+                  <Dropdown.Toggle
+                    variant="secondary"
+                    className="three-dot-dropdown"
+                  >
                     <img
-                      src="/images/trash.svg"
-                      className="img-fluid icon-list"
-                      alt="discard"
+                      src="/images/three_dot_menu.svg"
+                      className="img-fluid"
+                      alt="menu"
                     />
-                    Delete profile
+                  </Dropdown.Toggle>
+                </OverlayTrigger>
+
+                <Dropdown.Menu className="three-dot-dropdown-menu">
+                  <Dropdown.Item onClick={() => setShowEditModelModal(true)}>
+                    <img
+                      src="/images/edit.svg"
+                      className="img-fluid icon-list"
+                      alt="edit"
+                    />
+                    Edit profile card
                   </Dropdown.Item>
-                )}
-              </Dropdown.Menu>
-            </Dropdown>
-          )}
+                  {(filteredItems?.find(
+                    (item) => item.status === "Published"
+                  ) === undefined ||
+                    filteredItems.length === 0) && (
+                    <Dropdown.Item
+                      onClick={() => setShowDeleteModelModal(true)}
+                    >
+                      <img
+                        src="/images/trash.svg"
+                        className="img-fluid icon-list"
+                        alt="discard"
+                      />
+                      Delete profile
+                    </Dropdown.Item>
+                  )}
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
+          </span>
         </div>
         <div className="d-flex labels">
           <div>
