@@ -776,7 +776,7 @@ const ViewModelVersion = (props) => {
                   <span>Archived version</span>
                 </div>
               ))}
-            {!isPublish && (
+            {(!isArchive && isPublish) && (
               <OverlayTrigger
                 placement="top"
                 overlay={<Tooltip>Download</Tooltip>}

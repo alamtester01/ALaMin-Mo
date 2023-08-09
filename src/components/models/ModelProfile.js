@@ -304,6 +304,7 @@ const ModelProfile = (props) => {
   const [showEditModelModal, setShowEditModelModal] = useState(false);
   const [refreshSubscribe, setRefreshSubscribe] = useState(0);
   const [subscribed, setSubscribed] = useState(false);
+  const [userAllow, setUserAllow] = useState(false);
 
   const handleDeleteModelModalClose = () => {
     setShowDeleteModelModal(false);
@@ -322,6 +323,20 @@ const ModelProfile = (props) => {
   useEffect(() => {
     // console.log(modelsAccuracy);
   }, [modelsAccuracy]);
+
+  useEffect(() => {
+    if (
+      currentModel[0]?.model_created_by === user.email ||
+      (modelGroup !== "Unassigned" &&
+        Object.values(currentGroup[0]?.group_members).find(
+          (group) => group.email === user.email
+        ))
+    ) {
+      setUserAllow(true);
+    } else {
+      setUserAllow(false);
+    }
+  }, [currentModel, currentGroup, modelGroup]);
 
   useEffect(() => {
     dispatch(getAllSubscribeModelProfile())
@@ -356,7 +371,6 @@ const ModelProfile = (props) => {
       );
     }
     if (subscribedModels.length > 0) {
-      console.log(subscribedModels);
       const subscribe = Object.values(
         subscribedModels[0]?.subscribe_model_profile
       ).find((i) => i === currentModel[0]?.id);
@@ -479,14 +493,14 @@ const ModelProfile = (props) => {
             alt="group"
           />
         </div>
-        {currentModel[0]?.model_created_by === user.email && (
+        {userAllow && (
           <Button className="button" onClick={() => handleAddVersionBtnClick()}>
             Add version
           </Button>
         )}
       </>
     );
-  }, [currentModel[0]]);
+  }, [userAllow]);
 
   /**
    * Columns template and configuration
@@ -897,15 +911,7 @@ const ModelProfile = (props) => {
             <Container className="mw-100">
               <DataTable
                 className="model-versions-datatable"
-                columns={
-                  (currentGroup[0] &&
-                    Object.values(currentGroup[0]?.group_members).find(
-                      (group) => group.email === user.email
-                    )) ||
-                  currentModel[0]?.model_created_by === user.email
-                    ? columns1
-                    : columns2
-                }
+                columns={userAllow ? columns1 : columns2}
                 data={paginatedData}
                 pagination={false}
                 subHeader
