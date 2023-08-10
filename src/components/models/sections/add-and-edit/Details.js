@@ -297,7 +297,7 @@ const Details = (props) => {
           </span>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label className="required-field semi-bold">
+          <Form.Label className="semi-bold">
             Paper or Other resource for information
           </Form.Label>
           <Form.Control

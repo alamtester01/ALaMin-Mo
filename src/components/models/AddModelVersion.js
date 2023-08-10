@@ -279,7 +279,6 @@ const AddModelVersion = (props) => {
       props?.modelInput !== "" &&
       props?.modelOutput !== "" &&
       props?.modelType !== "" &&
-      props?.modelPaper !== "" &&
       props?.modelCitationDetails !== "<p><br></p>" &&
       props?.modelLicense !== "<p><br></p>" &&
       props?.modelPrimaryIntendedUses !== "" &&
@@ -415,6 +414,7 @@ const AddModelVersion = (props) => {
           return;
         }
         break;
+      case "modelPaper":
       case "modelOtherRelevantInfo":
       case "modelGroups":
       case "modelUnitaryResults":
