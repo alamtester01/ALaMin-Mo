@@ -46,7 +46,7 @@ const Profile = (props) => {
       <Dropdown
         show={expanded}
         onToggle={handleToggleExpand}
-        className="my-groups-dropdown"
+        className="profile-dropdown"
       >
         <Dropdown.Toggle
           variant="outline-primary"

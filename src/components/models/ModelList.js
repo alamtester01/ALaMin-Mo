@@ -584,9 +584,7 @@ const ModelList = (props) => {
   }, []);
 
   useEffect(() => {
-    dispatch(getAllSubscribeModelProfile())
-      // .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    dispatch(getAllSubscribeModelProfile()).catch((err) => console.log(err));
   }, [refreshSubscribe]);
 
   const [currentPage, setCurrentPage] = useState(1);

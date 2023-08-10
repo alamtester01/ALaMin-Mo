@@ -39,7 +39,7 @@ const Header = (props) => {
           <div className="d-flex">
             {props?.isLoggedIn ? (
               <>
-                <Notification />
+                {/* <Notification /> */}
                 <Profile />
               </>
             ) : (

@@ -293,6 +293,14 @@
   cursor: pointer;
 }
 
+.rdt_TableRow .heart{
+  display: none;
+}
+
+.rdt_TableRow:hover .heart{
+  display: block;
+}
+
 /* for the dropdown menu in the table head */
 .rdt_TableCol_Sortable {
   overflow: visible !important;
