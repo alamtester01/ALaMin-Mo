@@ -65,7 +65,7 @@ const DeleteGroupModal = (props) => {
             onClick={handleFormSubmit}
             className="submit-btn"
           >
-            Remove
+            Delete
           </Button>
         </Modal.Footer>
       </Modal>

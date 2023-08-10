@@ -200,7 +200,7 @@ const GroupProfile = (props) => {
       selector: (row) => row.name,
       width: "50%",
       cell: (row) => (
-        <div key={row.name} className="flex d-flex justify-content-between">
+        <div key={row.name} className="flex d-flex justify-content-between align-items-center">
           <div>
             <img
               src="/images/user_list.svg"

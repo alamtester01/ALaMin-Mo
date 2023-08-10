@@ -62,7 +62,6 @@ const Profile = (props) => {
               className="img-fluid"
               alt="Profile"
             />
-            <div className="bold">Contributor</div>
             <div>{user?.first_name + " " + user?.last_name}</div>
             <p>{user?.email}</p>
             <Button className="button btn btn-primary" type="button">

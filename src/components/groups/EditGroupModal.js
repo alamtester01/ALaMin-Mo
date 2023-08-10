@@ -87,6 +87,9 @@ const EditGroupModal = (props) => {
    * @return {void}
    */
   const validate = (name, value) => {
+    if (name === "groupDescription" && value === "<p><br></p>") {
+      value = "";
+    }
     if (!value) {
       setIsValid(Object.assign(isValid, { [name]: false }));
       setError(Object.assign(error, { [name]: "Please fill out this field" }));

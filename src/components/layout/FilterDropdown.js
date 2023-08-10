@@ -124,7 +124,12 @@ const FilterDropdown = (props) => {
 
   useEffect(() => {
     if (props?.options.length < 1) {
-      setSelectedOptions([])
+      setSelectedOptions([]);
+    } else {
+      const updatedSelectedOptions = selectedOptions.filter((selected) =>
+        props?.options.find((option) => option === selected)
+      );
+      setSelectedOptions(updatedSelectedOptions);
     }
   }, [props?.options]);
 
@@ -162,13 +167,6 @@ const FilterDropdown = (props) => {
       </Dropdown.Toggle>
       <Dropdown.Menu className="my-groups-dropdown-menu">
         <Form>
-          <FormControl
-            type="text"
-            placeholder="Search"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="input-search"
-          />
           {filteredOptions.length === 0 ? (
             <p className="m-5 text-center">
               {props.options.length === 0
@@ -177,6 +175,13 @@ const FilterDropdown = (props) => {
             </p>
           ) : (
             <>
+              <FormControl
+                type="text"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="input-search"
+              />
               <div className="group-list-checkboxes">
                 {visibleOptions.map((option) => (
                   <FormCheck

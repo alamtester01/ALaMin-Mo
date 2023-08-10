@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Container, Form, FormControl, InputGroup } from "react-bootstrap";
+import { Container, Form, InputGroup } from "react-bootstrap";
 import { modules, formats } from "common/constants";
 import ReactQuill from "react-quill";
 

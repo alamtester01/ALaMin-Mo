@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logout } from "actions/auth";
-import AuthVerify from "common/AuthVerify";
+import { useNavigate } from "react-router-dom"
 import Notification from "./Notification";
 import Profile from "./Profile";
 
