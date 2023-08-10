@@ -221,7 +221,11 @@ const ModelList = (props) => {
           onClick={() => handleRowClick(row)}
         >
           <div>{row.model_profile_name}</div>
-          <div onClick={(event) => handleSubscribe(row.id, row.model_subscribe, event)}>
+          <div
+            onClick={(event) =>
+              handleSubscribe(row.id, row.model_subscribe, event)
+            }
+          >
             <img
               src={
                 row?.model_subscribe

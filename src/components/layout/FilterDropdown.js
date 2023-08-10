@@ -84,7 +84,7 @@ const FilterDropdown = (props) => {
             )
             .map((item) => item.group_name)
             .sort((a, b) => {
-              return compareValues(a, b);
+              return compareValues(a, b, "asc");
             })
         );
       } else if (props?.name === "created_by") {
@@ -95,7 +95,7 @@ const FilterDropdown = (props) => {
             )
             .map((item) => item.created_by)
             .sort((a, b) => {
-              return compareValues(a, b);
+              return compareValues(a, b, "asc");
             })
         );
       } else {
@@ -105,7 +105,7 @@ const FilterDropdown = (props) => {
               option.toLowerCase().includes(searchTerm.toLowerCase())
             )
             .sort((a, b) => {
-              return compareValues(a, b);
+              return compareValues(a, b, "asc");
             })
         );
       }
