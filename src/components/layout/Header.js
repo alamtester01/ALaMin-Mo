@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import Notification from "./Notification";
 import Profile from "./Profile";
 
@@ -23,19 +23,20 @@ const Header = (props) => {
 
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const location = useLocation();
 
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-light-color">
         <div className="container-fluid">
-          <a className="navbar-brand" href="/">
+          <Link to="/" className="navbar-brand">
             <img
-              src="/images/model_store.svg"
+              src="/images/astiALaM-logo-only.png"
               className="logo"
               alt="Model Store logo"
             />
-          </a>
+            <span className="dimer semi-bold ms-2">DIMER</span>
+          </Link>
           <div className="d-flex">
             {props?.isLoggedIn ? (
               <>
@@ -43,17 +44,18 @@ const Header = (props) => {
                 <Profile />
               </>
             ) : (
-              <>
-                <Button
-                  className="button btn btn-primary"
-                  type="button"
-                  onClick={() => navigate("signin")}
-                >
-                  Sign in
-                </Button>
-              </>
+              !location.pathname.includes("signin") && (
+                <>
+                  <Button
+                    className="button btn btn-primary"
+                    type="button"
+                    onClick={() => navigate("signin")}
+                  >
+                    Sign in
+                  </Button>
+                </>
+              )
             )}
-            
           </div>
         </div>
       </nav>
