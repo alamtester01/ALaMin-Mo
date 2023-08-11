@@ -25,13 +25,13 @@ const Home = (props) => {
   const navigate = useNavigate();
 
   /**
-   * Navigates to home page
-   * @method onClickHome
+   * Navigates to create account page
+   * @method onClickSignUp
    */
-  const onClickHome = () => {
-    navigate("/");
+  const onClickSignUp = () => {
+    navigate("/signup");
   };
-
+  
   /**
    *  Navigate to the model list if the user already logged in
    */
@@ -58,7 +58,7 @@ const Home = (props) => {
             <button
               type="button"
               className="button btn btn-primary btn-lg"
-              onClick={onClickHome}
+              onClick={onClickSignUp}
             >
               Sign up
             </button>
