@@ -5,7 +5,7 @@ import axios from "axios";
  * @module services/groupServices
  */
 
-const API_URL = "http://localhost:8000/api/feature/";
+const API_URL = "http://192.168.14.177:8000/api/feature/";
 
 /**
  * Add model information service that sends request and receives response data using axios

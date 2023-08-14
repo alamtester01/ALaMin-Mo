@@ -168,11 +168,20 @@ const FilterDropdown = (props) => {
       <Dropdown.Menu className="my-groups-dropdown-menu">
         <Form>
           {filteredOptions.length === 0 ? (
-            <p className="m-5 text-center">
-              {props.options.length === 0
-                ? emptyListMessage
-                : "No matched results"}
-            </p>
+            props.options.length === 0 ? (
+              <p className="m-5 text-center">{emptyListMessage}</p>
+            ) : (
+              <>
+                <FormControl
+                  type="text"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="input-search"
+                />
+                <p className="m-5 text-center">No matched results</p>
+              </>
+            )
           ) : (
             <>
               <FormControl
