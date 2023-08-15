@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
 
 /**
  * A module for Home Page component
@@ -31,7 +32,11 @@ const Home = (props) => {
   const onClickSignUp = () => {
     navigate("/signup");
   };
-  
+
+  useEffect(() => {
+    navigate("/signup");
+  }, []);
+
   /**
    *  Navigate to the model list if the user already logged in
    */

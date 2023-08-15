@@ -64,9 +64,9 @@ const Profile = (props) => {
             />
             <div>{user?.first_name + " " + user?.last_name}</div>
             <p>{user?.email}</p>
-            <Button className="button btn btn-primary" type="button">
+            {/* <Button className="button btn btn-primary" type="button">
               Manage Account
-            </Button>
+            </Button> */}
             <Dropdown.Divider />
             <Button
               variant="outline-light"
