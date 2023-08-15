@@ -34,7 +34,7 @@ const Home = (props) => {
   };
 
   useEffect(() => {
-    navigate("/signup");
+    navigate("/signin");
   }, []);
 
   /**
