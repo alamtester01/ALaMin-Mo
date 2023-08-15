@@ -214,7 +214,7 @@ const SignIn = (props) => {
                 value={password}
                 onChange={onChangePassword}
               />
-              <Button variant="outline-secondary">
+              <Button className="eye" variant="outline-secondary">
                 <FontAwesomeIcon
                   className="icon"
                   onClick={onClickPasswordBtn}
@@ -222,11 +222,11 @@ const SignIn = (props) => {
                 />
               </Button>
               {getFormErrorMessage("password")}
-              <div className="text-right">
+              {/* <div className="text-right">
                 <Link to="/forgot-password/" className="forgot-password-link">
                   Forgot password?
                 </Link>
-              </div>
+              </div> */}
             </InputGroup>
           </div>
 

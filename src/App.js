@@ -899,7 +899,7 @@ const App = () => {
                 path="/activate/:uid/:token"
                 element={<AccountActivate />}
               />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
+              {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
               <Route path="/404" element={<PageNotFound />} />
               <Route path="*" element={<Navigate to="/404" />} />
             </Routes>
