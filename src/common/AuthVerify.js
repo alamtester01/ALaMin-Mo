@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 /**
  * A module for Auth verify component
  *
@@ -15,31 +16,31 @@
  *
  */
 const parseJwt = (token) => {
-    try {
-      return JSON.parse(atob(token.split(".")[1]));
-    } catch (e) {
-      return null;
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
+
+/**
+ * Verifying user access by decoding JWT expiration Component
+ * @method AuthVerify
+ * @param {any} props - An arbitrary inputs of components
+ *
+ * @return {JSX.Element}
+ *
+ */
+const AuthVerify = (props) => {
+  const navigate = useNavigate();
+  const access = localStorage.getItem("access");
+  if (access) {
+    const decodedJwt = parseJwt(access);
+    if (decodedJwt.exp * 1000 < Date.now()) {
+      props?.logout();
+      navigate("/");
     }
-  };
-  
-  
-  /**
-   * Verifying user access by decoding JWT expiration Component
-   * @method AuthVerify
-   * @param {any} props - An arbitrary inputs of components
-   *
-   * @return {JSX.Element}
-   *
-   */
-  const AuthVerify = (props) => {
-    const access = localStorage.getItem("access");
-    if (access) {
-      const decodedJwt = parseJwt(access);
-      if (decodedJwt.exp * 1000 < Date.now()) {
-        props?.logout();
-      }
-    }
-  };
-  
-  export default AuthVerify;
-  
+  }
+};
+
+export default AuthVerify;

@@ -82,7 +82,7 @@ const Overview = (props) => {
 
   const handleFileChange = (event) => {
     props?.setSelectedFile(event.target.files[0]);
-    props?.validate("modelFile", event.target.files[0].name);
+    props?.validate("modelFile", event.target.files[0]?.name);
   };
 
   const handleDragOver = (event) => {

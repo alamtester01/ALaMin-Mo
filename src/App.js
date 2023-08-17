@@ -969,7 +969,7 @@ const App = () => {
           </ToastContainer>
         )}
       </div>
-      <span className="version">v4.1</span>
+      <span className="version">v4.1a</span>
     </>
   );
 };

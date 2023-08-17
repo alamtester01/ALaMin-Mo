@@ -786,7 +786,6 @@ const EditModelVersion = (props) => {
     if (isPublish) {
       validateAll();
       if (Object.keys(error).length === 0) {
-        console.log("test");
         if (props?.selectedFile !== "") {
           props?.handleUploadFile(true);
         } else {

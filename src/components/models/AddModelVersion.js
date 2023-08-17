@@ -267,7 +267,7 @@ const AddModelVersion = (props) => {
 
     if (
       Object.keys(error).length === 0 &&
-      (props?.selectedFile !== "" || props.modelFile !== "") &&
+      props?.selectedFile !== "" &&
       props?.modelNumber !== "" &&
       props?.modelVersionName !== "" &&
       props?.modelVersionDescription !== "<p><br></p>" &&
@@ -445,7 +445,6 @@ const AddModelVersion = (props) => {
 
   const validateAll = () => {
     setCounter(counter + 1);
-    validate("modelFile", props?.modelFile);
     validate("modelNumber", props?.modelNumber);
     validate("modelVersionName", props?.modelVersionName);
     validate("modelVersionDescription", props?.modelVersionDescription);

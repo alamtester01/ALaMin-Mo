@@ -35,6 +35,10 @@ const Details = (props) => {
         <p>{props?.modelInput || "--"}</p>
       </div>
       <div className="mb-3">
+        <label className="semi-bold">Output</label>
+        <p>{props?.modelOutput || "--"}</p>
+      </div>
+      <div className="mb-3">
         <label className="semi-bold">Type</label>
         <p>{props?.modelType || "--"}</p>
       </div>

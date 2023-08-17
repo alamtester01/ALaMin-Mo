@@ -49,7 +49,7 @@ const Sidebar = (props) => {
         setToastImage={props?.setToastImage}
       />
       <Col className="sidebar-col col-md-2 bg-light-color">
-        <div className="d-flex flex-column flex-shrink-0 p-3">
+        <div className="sidebar p-3">
           <ul className="nav nav-pills flex-column mb-auto">
             <li className="nav-item">
               <Dropdown className="mb-9">

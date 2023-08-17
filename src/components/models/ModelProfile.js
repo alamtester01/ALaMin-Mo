@@ -327,7 +327,8 @@ const ModelProfile = (props) => {
   useEffect(() => {
     if (
       currentModel[0]?.model_created_by === user.email ||
-      (modelGroup !== "Unassigned" && currentGroup[0]?.group_members && 
+      (modelGroup !== "Unassigned" &&
+        currentGroup[0]?.group_members &&
         Object.values(currentGroup[0]?.group_members).find(
           (group) => group.email === user.email
         ))
@@ -645,14 +646,21 @@ const ModelProfile = (props) => {
             if (row) {
               const formattedDate = convertDate(row.date_created);
               return (
-                row.version.toLowerCase().includes(filterText.toLowerCase()) ||
-                row.name.toLowerCase().includes(filterText.toLowerCase()) ||
-                row?.file?.toLowerCase().includes(filterText.toLowerCase()) ||
-                formattedDate
-                  .toLowerCase()
-                  .includes(filterText.toLowerCase()) ||
-                row.author.toLowerCase().includes(filterText.toLowerCase()) ||
-                row.status.toLowerCase().includes(filterText.toLowerCase())
+                (row.version.toLowerCase().includes(filterText.toLowerCase()) ||
+                  row.name.toLowerCase().includes(filterText.toLowerCase()) ||
+                  row?.file?.toLowerCase().includes(filterText.toLowerCase()) ||
+                  formattedDate
+                    .toLowerCase()
+                    .includes(filterText.toLowerCase()) ||
+                  row.author.toLowerCase().includes(filterText.toLowerCase()) ||
+                  row.status
+                    .toLowerCase()
+                    .includes(filterText.toLowerCase())) &&
+                (!userAllow
+                  ? row.status.toLowerCase().includes("published")
+                  : (row.status.toLowerCase().includes("draft") ||
+                    row.status.toLowerCase().includes("archived") ||
+                    row.status.toLowerCase().includes("published")))
               );
             }
           })

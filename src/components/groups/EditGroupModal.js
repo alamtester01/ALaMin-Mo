@@ -149,8 +149,7 @@ const EditGroupModal = (props) => {
   }, [groupName, groupDescription]);
 
   useEffect(() => {
-    setGroupName(props?.groupName);
-    setGroupDescription(props?.groupDescription);
+    resetModalForm();
   }, [props]);
 
   return (
@@ -199,13 +198,13 @@ const EditGroupModal = (props) => {
                 formats={formats}
                 value={groupDescription}
                 onChange={onChangeGroupDescription}
-                className={`form-control ${
+                className={`input-description form-control ${
                   isValid?.groupDescription
                     ? "is-valid"
                     : isValid.groupDescription !== undefined
                     ? "is-invalid"
                     : ""
-                } ${toolbarHidden ? "toolbar-hidden" : "toolbar-display"}`}
+                } ${toolbarHidden ? "ql-editor-170 toolbar-hidden" : "ql-editor-100toolbar-display"}`}
               />
               {getFormErrorMessage("groupDescription")}
               <Form.Text className="text-muted">

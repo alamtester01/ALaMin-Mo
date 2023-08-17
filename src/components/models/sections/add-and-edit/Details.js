@@ -53,8 +53,35 @@ const Details = (props) => {
 
   const onChangeModelAccuracy = (e) => {
     const value = e.target.value;
-    props?.setModelAccuracy(value);
+    const regex = /^\d+(\.\d{0,2})?$/;
+
+    if (!regex.test(value)) {
+      props?.setModelAccuracy(parseFloat(value).toFixed(2));
+    } else {
+      props?.setModelAccuracy(value);
+    }
+
+    if (value < 0) {
+      props?.setModelAccuracy(0);
+    }
+
+    if (value > 100) {
+      props?.setModelAccuracy(100);
+    }
+
     props?.validate("modelAccuracy", value);
+  };
+
+  const onBlurModelAccuracy = (e) => {
+    const value = e.target.value;
+    // Check if the input has a decimal point
+    if (value.includes(".")) {
+      // Remove trailing ".00" or ".0" if present
+      const formattedStr = value.replace(/(\.\d*?)0+$/, "$1");
+
+      // Convert back to a float if needed
+      props?.setModelAccuracy(formattedStr);
+    }
   };
 
   const onChangeModelInput = (e) => {
@@ -175,7 +202,7 @@ const Details = (props) => {
     setToolbarHiddenModelCitationDetails(true);
     setToolbarHiddenModelLicense(true);
     setToolbarHiddenModelOtherRelevantInfo(true);
-  }, [])
+  }, []);
 
   return (
     <Container className="mw-65 ms-0">
@@ -210,6 +237,8 @@ const Details = (props) => {
           <Form.Control
             type="text"
             value={props?.modelDevelopers}
+            min="0"
+            max="100"
             onChange={onChangeModelDevelopers}
             className={`form-control ${
               props?.isValid?.modelDevelopers
@@ -226,11 +255,14 @@ const Details = (props) => {
           </span>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label className="required-field semi-bold">Accuracy</Form.Label>
+          <Form.Label className="required-field semi-bold">
+            Accuracy (%)
+          </Form.Label>
           <Form.Control
-            type="text"
+            type="number"
             value={props?.modelAccuracy}
             onChange={onChangeModelAccuracy}
+            onBlur={onBlurModelAccuracy}
             className={`form-control ${
               props?.isValid?.modelAccuracy
                 ? "is-valid"

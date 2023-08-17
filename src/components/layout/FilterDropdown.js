@@ -147,7 +147,7 @@ const FilterDropdown = (props) => {
     >
       <Dropdown.Toggle
         variant="outline-primary"
-        className={expanded ? "button" : "my-groups-btn btn-outline-light"}
+        className={expanded ? "button" : selectedOptions[0] ?  "button show" : "my-groups-btn btn-outline-light"}
         id="dropdown-filter-toggle"
       >
         {props?.filterTitle}

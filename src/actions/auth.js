@@ -222,6 +222,7 @@ import {
           if (data.access) {
             localStorage.setItem("user", JSON.stringify(data.user));
             localStorage.setItem("access", data.access);
+            localStorage.setItem("refresh", data.refresh);
           }
           dispatch({
             type: LOGIN_SUCCESS,
