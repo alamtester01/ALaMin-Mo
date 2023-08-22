@@ -159,8 +159,13 @@ const EditModelModal = (props) => {
    * @return {void}
    */
   const validate = (name, value) => {
-    if (name === "modelDescription" && value === "<p><br></p>") {
-      value = "";
+    if (name === "modelDescription") {
+      const parser = new DOMParser();
+      const parsedHTML = parser.parseFromString(value, "text/html");
+      const textContent = parsedHTML.body.textContent.trim();
+      if (textContent === "") {
+        value = "";
+      }
     }
     if (!value && name !== "modelGroup") {
       setIsValid(Object.assign(isValid, { [name]: false }));

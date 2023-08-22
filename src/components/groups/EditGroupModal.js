@@ -87,8 +87,13 @@ const EditGroupModal = (props) => {
    * @return {void}
    */
   const validate = (name, value) => {
-    if (name === "groupDescription" && value === "<p><br></p>") {
-      value = "";
+    if (name === "groupDescription") {
+      const parser = new DOMParser();
+      const parsedHTML = parser.parseFromString(value, "text/html");
+      const textContent = parsedHTML.body.textContent.trim();
+      if (textContent === "") {
+        value = "";
+      }
     }
     if (!value) {
       setIsValid(Object.assign(isValid, { [name]: false }));

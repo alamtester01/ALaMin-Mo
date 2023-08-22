@@ -171,7 +171,7 @@ const AuthVerify = () => {
             />
             <span className="dimer semi-bold ms-2">DIMER</span>
             <div>
-              <p>Auto Logout in: {secondsUntilPrompt} seconds</p>
+              <p>Prompt will show in: {secondsUntilPrompt} seconds</p>
             </div>
           </Link>
           <div className="d-flex">
