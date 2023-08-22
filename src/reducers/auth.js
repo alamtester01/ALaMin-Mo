@@ -69,6 +69,7 @@ import {
           user: null,
         };
       case LOGOUT:
+        console.log("logout")
         return {
           ...state,
           isLoggedIn: false,

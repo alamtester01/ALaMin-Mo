@@ -10,13 +10,17 @@ import { useEffect } from "react";
 /**
  * Require Authentication component
  * @method RequireAuth
- * 
+ *
  * @return {JSX.Element}
  *
  */
 const RequireAuth = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const location = useLocation();
+
+  useEffect(() => {
+    console.log(isLoggedIn);
+  }, [isLoggedIn]);
 
   return isLoggedIn ? (
     <Outlet />

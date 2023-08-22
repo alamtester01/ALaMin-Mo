@@ -38,6 +38,8 @@ import {
 } from "actions/model";
 import ViewModelVersion from "components/models/ViewModelVersion";
 import EditModelVersion from "components/models/EditModelVersion";
+import { logout } from "actions/auth";
+// import AuthVerify from "common/AuthVerify";
 
 /**
  * A module for App main component
@@ -70,6 +72,8 @@ const App = () => {
   const handleDismiss = () => {
     setShowToast(false);
   };
+
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   // Overview
   const [modelNumber, setModelNumber] = useState("");
@@ -614,7 +618,10 @@ const App = () => {
   return (
     <>
       <div className="layout">
-        <Header isLoggedIn={isLoggedIn} />
+        <Header
+          showLogoutModal={showLogoutModal}
+          setShowLogoutModal={setShowLogoutModal}
+        />
         <div className="main">
           {isLoggedIn && (
             <Sidebar
@@ -893,7 +900,16 @@ const App = () => {
                 />
               </Route>
               <Route path="/" element={<Home />} />
-              <Route path="/signin" element={<SignIn />} />
+              <Route
+                path="/signin"
+                element={
+                  <SignIn
+                    setShowToast={setShowToast}
+                    setToastStatus={setToastStatus}
+                    setToastImage={setToastImage}
+                  />
+                }
+              />
               <Route path="/signup" element={<SignUp />} />
               <Route
                 path="/activate/:uid/:token"
@@ -969,7 +985,7 @@ const App = () => {
           </ToastContainer>
         )}
       </div>
-      <span className="version">v4.1a</span>
+      <span className="version">v4.1b</span>
     </>
   );
 };

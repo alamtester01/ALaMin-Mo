@@ -280,6 +280,9 @@ const GroupList = () => {
               : true)
         )
         .sort((a, b) => {
+          if (filterText) {
+            return compareValues(a.group_name, b.group_name, "asc");
+          }
           const parser = new DOMParser();
           const parsedHTMLA = parser.parseFromString(
             a.group_description,

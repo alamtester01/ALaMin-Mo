@@ -38,7 +38,6 @@ const Profile = (props) => {
    */
   const onClickLogout = () => {
     dispatch(logout());
-    navigate("/");
   };
 
   return (
@@ -79,7 +78,6 @@ const Profile = (props) => {
           </div>
         </Dropdown.Menu>
       </Dropdown>
-      <AuthVerify logout={onClickLogout} />
     </>
   );
 };

@@ -1,9 +1,13 @@
 .logo {
-    height: 39px;
-    margin-left: 2%;
-  }
+  height: 39px;
+  margin-left: 2%;
+}
 
-  .dimer {
-    color: #262262;
-    font-size: 22px;
-  }
+.dimer {
+  color: #262262;
+  font-size: 22px;
+}
+
+.yellow {
+  background-color: #ffe665;
+}

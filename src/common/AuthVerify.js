@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 /**
  * A module for Auth verify component
  *
@@ -32,13 +31,10 @@ const parseJwt = (token) => {
  *
  */
 const AuthVerify = (props) => {
-  const navigate = useNavigate();
-  const access = localStorage.getItem("access");
-  if (access) {
-    const decodedJwt = parseJwt(access);
+  if (props?.access) {
+    const decodedJwt = parseJwt(props?.access);
     if (decodedJwt.exp * 1000 < Date.now()) {
       props?.logout();
-      navigate("/");
     }
   }
 };

@@ -171,7 +171,12 @@ const CreateGroupModal = (props) => {
    */
   const validate = (name, value) => {
     if (name === "groupDescription" && value === "<p><br></p>") {
-      value = "";
+      const parser = new DOMParser();
+      const parsedHTML = parser.parseFromString(value, "text/html");
+      const textContent = parsedHTML.body.textContent.trim();
+      if (textContent === "") {
+        value = "";
+      }
     }
     if (!value) {
       setIsValid(Object.assign(isValid, { [name]: false }));

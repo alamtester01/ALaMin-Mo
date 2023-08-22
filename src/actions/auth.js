@@ -260,7 +260,7 @@ import {
           });
         }
   
-        return Promise.reject();
+        return Promise.reject("error");
       }
     );
   };
@@ -275,11 +275,10 @@ import {
    *
    */
   export const logout = () => (dispatch) => {
-    AuthService.logout();
-  
     dispatch({
       type: LOGOUT,
     });
+    AuthService.logout();
   };
   
   /**

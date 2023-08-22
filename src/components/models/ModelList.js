@@ -432,6 +432,9 @@ const ModelList = (props) => {
           );
         })
         .sort((a, b) => {
+          if (filterText) {
+            return compareValues(a.model_profile_name, b.model_profile_name, "asc");
+          }
           switch (sortColumn) {
             case "Name":
               return compareValues(

@@ -142,8 +142,10 @@ const SignIn = (props) => {
     if (Object.keys(error).length === 0) {
       setLoading(true);
       dispatch(login(email, password))
-        .catch((err) => {
-          console.log(err);
+        .catch((status) => {
+          props?.setShowToast(true);
+          props?.setToastStatus(status);
+          props?.setToastImage(null);
         })
         .finally(() => {
           setLoading(false);
